@@ -2,8 +2,9 @@ var THREE = (window.THREE = require("three"));
 require("three/examples/js/loaders/GLTFLoader");
 var loader = new THREE.GLTFLoader();
 loader.load(
-  "./public/path/untitled.glb",
+  "./public/path/DaDouShaBao.glb",
   function (gltf) {
+    gltf.Mesh
     scene.add(gltf.scene);
   },
   undefined,
@@ -20,6 +21,7 @@ var camera = new THREE.PerspectiveCamera(
 );
 
 var renderer = new THREE.WebGLRenderer();
+renderer.setClearColor(0xffff00);
 renderer.setSize(window.innerWidth, window.innerHeight);
 document.body.appendChild(renderer.domElement);
 

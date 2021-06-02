@@ -1,7 +1,8 @@
-const path = require("path");
-const webpack = require("webpack");
 const MiniCssExtractPlugin = require("mini-css-extract-plugin");
 const HtmlWebpackPlugin = require("html-webpack-plugin");
+// const CopyWebpackPlugin = require("copy-webpack-plugin"); // 拷贝插件
+const path = require("path");
+const webpack = require("webpack");
 
 module.exports = {
   mode: "production",
@@ -21,11 +22,12 @@ module.exports = {
     filename: "public/js/[name].js",
   },
   plugins: [
+    // new CopyWebpackPlugin([{ patterns: { from: "from/file.txt" } }]),
     //  配置 MiniCssExtractPlugin 生成独立的 CSS 文件
     new MiniCssExtractPlugin({
       filename: "public/css/[name].css",
     }),
-    // // 匹配生成不同的html页面
+    // 匹配生成不同的html页面
     new HtmlWebpackPlugin({
       filename: "index.html",
       template: "./src/pages/index/index.html",
