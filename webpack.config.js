@@ -8,7 +8,7 @@ module.exports = {
   //  入口文件
   entry: {
     // js 插件分类
-    // vendors: ["jquery", "bootstrap", "popper.js"],
+    vendors: ["three"],
     // 页面入口
     index: ["./src/pages/index/index.js"],
   },
@@ -29,7 +29,7 @@ module.exports = {
     new HtmlWebpackPlugin({
       filename: "index.html",
       template: "./src/pages/index/index.html",
-      chunks: ["index"],
+      chunks: ["index", "vendors"],
     }),
   ],
   module: {
@@ -46,11 +46,11 @@ module.exports = {
           },
         ],
       },
-      {
-        test: /\.js$/,
-        exclude: /node_modules/,
-        loader: "babel-loader",
-      },
+      // {
+      //   test: /\.js$/,
+      //   exclude: /node_modules/,
+      //   loader: "babel-loader",
+      // },
       {
         test: /\.css$/,
         use: [
