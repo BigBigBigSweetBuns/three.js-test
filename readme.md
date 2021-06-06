@@ -26,3 +26,10 @@ vscode 插件 `Live Server` 作为本地服务器
 `npm i` 安装环境
 
 `Live Server` 启动指向打包后 `index.html` 文件
+
+
+#### 待完成事宜
+
+添加开发模式的 package
+
+添加复制文件功能:daDouShaBao.js 中的 文字文件
