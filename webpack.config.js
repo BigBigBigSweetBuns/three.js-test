@@ -12,6 +12,7 @@ module.exports = {
     vendors: ["three"],
     // 页面入口
     index: ["./src/pages/index/index.js"],
+    daDouShaBao: ["./src/pages/daDouShaBao/daDouShaBao.js"],
   },
   output: {
     // 公共开头
@@ -32,6 +33,11 @@ module.exports = {
       filename: "index.html",
       template: "./src/pages/index/index.html",
       chunks: ["index", "vendors"],
+    }),
+    new HtmlWebpackPlugin({
+      filename: "daDouShaBao.html",
+      template: "./src/pages/daDouShaBao/daDouShaBao.html",
+      chunks: ["daDouShaBao", "vendors"],
     }),
   ],
   module: {
