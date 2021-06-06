@@ -46,18 +46,17 @@ let x = 0;
 let y = 0;
 let z = 5;
 
-rotate = 1;
+let rotate = 0; //初始角度
+let rotateAdd = .05; //旋转角度
 
 var animate = function () {
   requestAnimationFrame(animate);
 
-  rotate = rotate < 360 ? rotate + .05 : 0; // 旋转360°
+  rotate = rotate < 360 ? rotate + rotateAdd : 0; // 旋转360°
 
   x = 5 * Math.sin(rotate);
   z = 5 * Math.cos(rotate);
 
-  console.log("x", x)
-  console.log("z", z)
   camera.position.x = x;
   camera.position.z = z;
 
