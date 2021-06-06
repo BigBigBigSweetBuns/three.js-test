@@ -5,10 +5,13 @@ require("three/examples/js/loaders/GLTFLoader");
 class ThreeTest {
   x = 0;
   y = 0;
-  z = 5;
+  z = 5; // 不紧贴的原点
+  sShow = 2;//三维场景显示范围控制系数，系数越大，显示的范围越大
   rotate = 0; //初始角度
   rotateAdd = 0.05;// 每次旋转角度
-  constructor() {
+  constructor(winWidth, winHeight) {
+    this.winWidth = winWidth;
+    this.winHeight = winHeight;
     this.init()
   }
   init() {
@@ -24,13 +27,13 @@ class ThreeTest {
   initRenderer() {
     this.renderer = new THREE.WebGLRenderer();
     this.renderer.setClearColor(0xffff00);
-    this.renderer.setSize(window.innerWidth, window.innerHeight);
+    this.renderer.setSize(this.winWidth, this.winHeight);
     document.body.appendChild(this.renderer.domElement);
   }
   initCamera() {
-    var k = window.innerWidth / window.innerHeight; //窗口宽高比
-    var s = 2;//三维场景显示范围控制系数，系数越大，显示的范围越大
-    this.camera = new THREE.OrthographicCamera(-k * s, k * s, s, -s, 0.1, 1000);
+    var k = this.winWidth / this.winHeight; //窗口宽高比
+    this.camera = new THREE.OrthographicCamera(-k * this.sShow, k * this.sShow, this.sShow, -this.sShow, 0.1, 1000);
+    this.camera.position.z = this.z;
   }
   initModule() {
     let loader = new THREE.GLTFLoader();
@@ -52,7 +55,7 @@ class ThreeTest {
   }
 }
 
-const threeTest = new ThreeTest();
+const threeTest = new ThreeTest(window.innerWidth, window.innerHeight);
 
 var animate = function () {
   requestAnimationFrame(animate);
