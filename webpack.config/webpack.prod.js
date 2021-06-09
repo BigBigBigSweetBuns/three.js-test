@@ -14,6 +14,7 @@ module.exports = {
     index: ["./src/pages/index/index.js"],
     daDouShaBao: ["./src/pages/daDouShaBao/daDouShaBao.js"],
   },
+  //打包后的文件和其输出目录
   output: {
     // 公共开头
     publicPath: "./",
