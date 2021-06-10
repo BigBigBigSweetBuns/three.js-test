@@ -1,6 +1,6 @@
 const MiniCssExtractPlugin = require("mini-css-extract-plugin");
 const HtmlWebpackPlugin = require("html-webpack-plugin");
-// const CopyWebpackPlugin = require("copy-webpack-plugin"); // 拷贝插件
+const CopyWebpackPlugin = require("copy-webpack-plugin"); // 拷贝插件
 const path = require("path");
 const webpack = require("webpack");
 
@@ -27,7 +27,10 @@ module.exports = {
     filename: "public/js/[name].js",
   },
   plugins: [
-    // new CopyWebpackPlugin([{ patterns: { from: "from/file.txt" } }]),
+    // 拷贝public到打包后的public中
+    new CopyWebpackPlugin({
+      patterns: [{ from: "./src/public", to: "./public" }],
+    }),
     //  配置 MiniCssExtractPlugin 生成独立的 CSS 文件
     new MiniCssExtractPlugin({
       filename: "public/css/[name].css",
