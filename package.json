@@ -5,10 +5,8 @@
   "main": "index.js",
   "type": "commonjs",
   "scripts": {
-    "dev": "webpack --config ./webpack.config/webpack.dev.js",
-    "build": "webpack --config ./webpack.config/webpack.prod.js",
-    "build-watch": "webpack --config ./webpack.config/webpack.prod.js -w",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "dev": "webpack --config ./webpack.config/webpack.dev.js -w",
+    "build": "webpack --config ./webpack.config/webpack.prod.js"
   },
   "author": "",
   "license": "ISC",

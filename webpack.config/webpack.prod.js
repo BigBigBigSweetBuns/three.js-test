@@ -1,5 +1,6 @@
 const MiniCssExtractPlugin = require("mini-css-extract-plugin");
 const HtmlWebpackPlugin = require("html-webpack-plugin");
+const { CleanWebpackPlugin } = require("clean-webpack-plugin");
 // const CopyWebpackPlugin = require("copy-webpack-plugin"); // 拷贝插件
 const path = require("path");
 const webpack = require("webpack");
@@ -19,11 +20,13 @@ module.exports = {
     // 公共开头
     publicPath: "./",
     //  输出的目录 dist
-    path: path.resolve(__dirname, "dist"),
+    path: path.resolve(__dirname, "../dist"),
     //  输出的 JS 文件名
     filename: "public/js/[name].js",
   },
   plugins: [
+    // 引入清空打包后的文件夹
+    new CleanWebpackPlugin(),
     // new CopyWebpackPlugin([{ patterns: { from: "from/file.txt" } }]),
     //  配置 MiniCssExtractPlugin 生成独立的 CSS 文件
     new MiniCssExtractPlugin({
@@ -55,11 +58,6 @@ module.exports = {
           },
         ],
       },
-      // {
-      //   test: /\.js$/,
-      //   exclude: /node_modules/,
-      //   loader: "babel-loader",
-      // },
       {
         test: /\.css$/,
         use: [
@@ -104,15 +102,6 @@ module.exports = {
               publicPath: "./",
               esModule: false,
             },
-          },
-        ],
-      },
-      {
-        test: /\.ejs$/,
-        exclude: /node_modules/,
-        use: [
-          {
-            loader: "underscore-template-loader",
           },
         ],
       },
