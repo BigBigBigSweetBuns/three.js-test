@@ -178,7 +178,7 @@ window.onload = () => {
     loader.load(
       "./public/fonts/helvetiker_bold.typeface.json",
       function (font) {
-        const initFlow = function (x, y, z, rotateX) {
+        const initFlow = function (x, y, z, rotateX, curve) {
           const geometry = new THREE.TextGeometry("DaDouShaBao", {
             font: font,
             size: 0.23,
@@ -187,7 +187,7 @@ window.onload = () => {
             bevelEnabled: false,
           });
           geometry.translate(x, y, z);
-          geometry.rotateX(Math.PI * (rotateX + 1 / 4));
+          geometry.rotateX(Math.PI * rotateX);
 
           const material = new THREE.MeshStandardMaterial({
             color: 0x99ffff,
@@ -198,41 +198,18 @@ window.onload = () => {
           tempFlow.updateCurve(0, curve);
           return tempFlow;
         };
-        const initFlow2 = function (x, y, z, rotateX) {
-          const geometry = new THREE.TextGeometry("DaDouShaBao", {
-            font: font,
-            size: 0.23,
-            height: 0.25,
-            curveSegments: 20,
-            bevelEnabled: false,
-          });
-          geometry.translate(x, y, z);
-          geometry.rotateX(Math.PI * (rotateX - 1 / 4));
 
-          const material = new THREE.MeshStandardMaterial({
-            color: 0x99ffff,
-          });
-
-          const objectToCurve = new THREE.Mesh(geometry, material);
-          const tempFlow = new Flow(objectToCurve);
-          tempFlow.updateCurve(0, curve2);
-          return tempFlow;
-        };
-
+        const rotateX1 = 0 + 1 / 4;
+        const rotateX2 = 1 / 2 + 1 / 4;
         // 添加两个文字
-        flow = initFlow(0, -0.11, -0.11, 0);
-        // flow2 = initFlow(-1.1, -0.11, -0.11, 1 / 2);
-        flow2 = initFlow(-2.2, -0.11, -0.11, 1 / 2);
-        flow3 = initFlow2(0, -0.11, -0.11, 0);
-        flow4 = initFlow2(-2.24, -0.11, -0.11, 1 / 2);
-        // flow3 = initFlow(-2.2, -0.11, -0.11, -1);
-        // flow4 = initFlow(1.1, -0.11, -0.11, -1 / 2);
+        flow = initFlow(0, -0.11, -0.11, rotateX1, curve);
+        flow2 = initFlow(-2.2, -0.11, -0.11, rotateX2, curve);
+        flow3 = initFlow(0, -0.11, -0.11, rotateX1, curve2);
+        flow4 = initFlow(-2.24, -0.11, -0.11, rotateX2, curve2);
         scene.add(flow.object3D);
         scene.add(flow2.object3D);
         scene.add(flow3.object3D);
         scene.add(flow4.object3D);
-        // scene.add(flow3.object3D);
-        // scene.add(flow4.object3D);
       }
     );
 
