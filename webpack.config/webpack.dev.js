@@ -1,5 +1,6 @@
 const MiniCssExtractPlugin = require("mini-css-extract-plugin");
 const HtmlWebpackPlugin = require("html-webpack-plugin");
+const { CleanWebpackPlugin } = require("clean-webpack-plugin");
 const CopyWebpackPlugin = require("copy-webpack-plugin"); // 拷贝插件
 const path = require("path");
 const webpack = require("webpack");
@@ -27,6 +28,8 @@ module.exports = {
     filename: "public/js/[name].js",
   },
   plugins: [
+    // 清空打包后的文件夹
+    new CleanWebpackPlugin(),
     // 拷贝public到打包后的public中
     new CopyWebpackPlugin({
       patterns: [{ from: "./src/public", to: "./public" }],
