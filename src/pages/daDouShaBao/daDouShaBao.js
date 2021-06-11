@@ -178,7 +178,7 @@ window.onload = () => {
     loader.load(
       "./public/fonts/helvetiker_bold.typeface.json",
       function (font) {
-        const initFlow = function (x, y, z, rotateX, curve) {
+        const initFont = function (x, y, z, rotateX = 0) {
           const geometry = new THREE.TextGeometry("DaDouShaBao", {
             font: font,
             size: 0.23,
@@ -188,24 +188,25 @@ window.onload = () => {
           });
           geometry.translate(x, y, z);
           geometry.rotateX(Math.PI * rotateX);
-
+          return geometry;
+        };
+        function initFlow(geometry, curve) {
           const material = new THREE.MeshStandardMaterial({
             color: 0x99ffff,
           });
-
           const objectToCurve = new THREE.Mesh(geometry, material);
           const tempFlow = new Flow(objectToCurve);
           tempFlow.updateCurve(0, curve);
           return tempFlow;
-        };
+        }
 
         const rotateX1 = 0 + 1 / 4;
         const rotateX2 = 1 / 2 + 1 / 4;
         // 添加两个文字
-        flow = initFlow(0, -0.11, -0.11, rotateX1, curve);
-        flow2 = initFlow(-2.2, -0.11, -0.11, rotateX2, curve);
-        flow3 = initFlow(0, -0.11, -0.11, rotateX1, curve2);
-        flow4 = initFlow(-2.24, -0.11, -0.11, rotateX2, curve2);
+        flow = initFlow(initFont(0, -0.11, -0.11, rotateX1), curve);
+        flow2 = initFlow(initFont(-2.2, -0.11, -0.11, rotateX2), curve);
+        flow3 = initFlow(initFont(0, -0.11, -0.11, rotateX1), curve2);
+        flow4 = initFlow(initFont(-2.24, -0.11, -0.11, rotateX2), curve2);
         scene.add(flow.object3D);
         scene.add(flow2.object3D);
         scene.add(flow3.object3D);
