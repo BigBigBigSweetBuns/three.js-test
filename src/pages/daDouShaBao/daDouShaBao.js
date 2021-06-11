@@ -31,11 +31,11 @@ class PeppersGhostEffect {
     this.setSize = function (width, height) {
       _halfWidth = width / 2;
       if (width < height) {
-        _width = width / 3;
-        _height = width / 3;
+        _width = width / 2;
+        _height = width / 2;
       } else {
-        _width = height / 3;
-        _height = height / 3;
+        _width = height / 2;
+        _height = height / 2;
       }
 
       renderer.setSize(width, height);
@@ -69,7 +69,7 @@ class PeppersGhostEffect {
         renderer.setViewport(x, y, width, height);
       }
 
-      render(scene, _cameraF, _halfWidth - _width / 2 + 1, 0, _width, _height);
+      render(scene, _cameraF, _halfWidth - _width / 2, 0, _width, _height);
       render(
         scene,
         _cameraB,
@@ -78,8 +78,6 @@ class PeppersGhostEffect {
         _width,
         _height
       );
-      // render(scene, _cameraB, 0, 0, _width, _height)
-      // render.setClearColor(0x0000ff, 1);
       renderer.setScissorTest(false);
     };
   }
@@ -237,7 +235,6 @@ window.onload = () => {
       flow4.moveAlongCurve(-0.001);
     }
     effect.render(scene, camera);
-    // render();
   }
 
   init();
