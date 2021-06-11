@@ -91,14 +91,7 @@ window.onload = () => {
 
     const windowWidth = window.innerWidth;
     const windowHeight = window.innerHeight;
-    var k = windowWidth / windowHeight;
     var z_plus = 2;
-    var s = 2; //三维场景显示范围控制系数，系数越大，显示的范围越大
-    //camera = new THREE.OrthographicCamera(0, 2, 0, -2, 1, 7.5);
-    camera = new THREE.OrthographicCamera(-s * k, s * k, s, -s, 1, 7.5);
-    //camera = new THREE.PerspectiveCamera( 40, window.innerWidth / window.innerHeight, 1, 1000);
-    camera.position.set(0, 0, 5);
-    camera.lookAt(scene.position);
 
     // Add Points Boxs
     const initialPoints = [
@@ -176,7 +169,7 @@ window.onload = () => {
     loader.load(
       "./public/fonts/helvetiker_bold.typeface.json",
       function (font) {
-        const initFont = function (x, y, z, rotateX = 0) {
+        const initFont = function (x = 0, y = 0, z = 0, rotateX = 0) {
           const geometry = new THREE.TextGeometry("DaDouShaBao", {
             font: font,
             size: 0.23,
@@ -185,7 +178,7 @@ window.onload = () => {
             bevelEnabled: false,
           });
           geometry.translate(x, y, z);
-          geometry.rotateX(Math.PI * rotateX);
+          geometry.rotateX(rotateX);
           return geometry;
         };
         function initFlow(geometry, curve) {
@@ -198,8 +191,8 @@ window.onload = () => {
           return tempFlow;
         }
 
-        const rotateX1 = 0 + 1 / 4;
-        const rotateX2 = 1 / 2 + 1 / 4;
+        const rotateX1 = Math.PI * (0 + 1 / 4);
+        const rotateX2 = Math.PI * (1 / 2 + 1 / 4);
         // 添加两个文字
         flow = initFlow(initFont(0, -0.11, -0.11, rotateX1), curve);
         flow2 = initFlow(initFont(-2.2, -0.11, -0.11, rotateX2), curve);
@@ -215,8 +208,8 @@ window.onload = () => {
     renderer = new THREE.WebGLRenderer({ antialias: true });
     renderer.setPixelRatio(window.devicePixelRatio);
     renderer.setSize(windowWidth, windowHeight);
-    //renderer.shadowMap.enabled = true;
-    //renderer.shadowMap.type = THREE.PCFSoftShadowMap;
+    // renderer.shadowMap.enabled = true;
+    // renderer.shadowMap.type = THREE.PCFSoftShadowMap;
     document.body.appendChild(renderer.domElement);
 
     // 添加相机
