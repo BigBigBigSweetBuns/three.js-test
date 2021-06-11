@@ -160,20 +160,16 @@ window.onload = () => {
     scene.add(line);
 
     // add Light
-    const light = new THREE.DirectionalLight(0xffaa33);
-    light.position.set(10, 0, 0);
-    light.intensity = 1.0;
-    scene.add(light);
-
-    const light3 = new THREE.DirectionalLight(0xffaa33);
-    light.position.set(-10, 0, 0);
-    light3.intensity = 1.0;
-    //var helper = new THREE.DirectionalLightHelper(light, 50,0xFFFFFF);
-    scene.add(light3);
-
-    const light2 = new THREE.AmbientLight(0x003973);
-    light2.intensity = 1.0;
-    scene.add(light2);
+    function initDirectionalLight(x, y, z, color = 0xffaa33, intensity = 1.0) {
+      const light = new THREE.DirectionalLight(color, intensity);
+      light.position.set(x, y, z);
+      return light;
+    }
+    // 点光
+    scene.add(initDirectionalLight(10, 0, 0, 0xffaa33));
+    scene.add(initDirectionalLight(0, 0, 0, 0xffaa33));
+    // 环境光
+    scene.add(new THREE.AmbientLight(0x003973));
 
     // add Text
 
