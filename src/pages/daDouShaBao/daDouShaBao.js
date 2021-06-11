@@ -86,9 +86,6 @@ class PeppersGhostEffect {
 }
 
 window.onload = () => {
-  const curveHandles = [];
-  const curveHandles2 = [];
-
   let scene, camera, renderer, flow, flow2, flow3, flow4, effect;
 
   function init() {
@@ -128,36 +125,31 @@ window.onload = () => {
       { x: 0, y: -0.707, z: 1 + z_plus },
     ];
 
-    const boxGeometry = new THREE.BoxGeometry(0.1, 0.1, 0.1);
-    const boxMaterial = new THREE.MeshBasicMaterial();
-
-    for (const handlePos of initialPoints) {
-      const handle = new THREE.Mesh(boxGeometry, boxMaterial);
-      handle.position.copy(handlePos);
-      curveHandles.push(handle);
-      //scene.add( handle );
-    }
-
-    const boxGeometry2 = new THREE.BoxGeometry(0.1, 0.1, 0.1);
-    for (const handlePos of initialPoints2) {
-      const handle2 = new THREE.Mesh(boxGeometry2, boxMaterial);
-      handle2.position.copy(handlePos);
-      curveHandles2.push(handle2);
+    function initMesh(initialPoints, width, height, depth) {
+      const arr = [];
+      const boxGeometry = new THREE.BoxGeometry(width, height, depth);
+      const boxMaterial = new THREE.MeshBasicMaterial();
+      for (const handlePos of initialPoints) {
+        const handle = new THREE.Mesh(boxGeometry, boxMaterial);
+        handle.position.copy(handlePos);
+        arr.push(handle);
+      }
+      return arr;
     }
 
     // add Curve
 
-    const curve = new THREE.CatmullRomCurve3(
-      curveHandles.map((handle) => handle.position)
-    );
-    curve.curveType = "centripetal";
-    curve.closed = true;
+    function initCurve(curveHandles) {
+      const curve = new THREE.CatmullRomCurve3(
+        curveHandles.map((handle) => handle.position)
+      );
+      curve.curveType = "centripetal";
+      curve.closed = true;
+      return curve;
+    }
 
-    const curve2 = new THREE.CatmullRomCurve3(
-      curveHandles2.map((handle2) => handle2.position)
-    );
-    curve2.curveType = "centripetal";
-    curve2.closed = true;
+    const curve = initCurve(initMesh(initialPoints, 0.1, 0.1, 0.1));
+    const curve2 = initCurve(initMesh(initialPoints2, 0.1, 0.1, 0.1));
 
     // Add line
     const points = curve.getPoints(50);
@@ -206,7 +198,7 @@ window.onload = () => {
           });
 
           const objectToCurve = new THREE.Mesh(geometry, material);
-          let tempFlow = new Flow(objectToCurve);
+          const tempFlow = new Flow(objectToCurve);
           tempFlow.updateCurve(0, curve);
           return tempFlow;
         };
@@ -226,7 +218,7 @@ window.onload = () => {
           });
 
           const objectToCurve = new THREE.Mesh(geometry, material);
-          let tempFlow = new Flow(objectToCurve);
+          const tempFlow = new Flow(objectToCurve);
           tempFlow.updateCurve(0, curve2);
           return tempFlow;
         };
