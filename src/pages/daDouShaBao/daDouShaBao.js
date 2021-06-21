@@ -11,16 +11,16 @@ class PeppersGhostEffect {
   constructor(renderer) {
     const scope = this;
 
-    scope.cameraDistance = 50;
+    scope.cameraDistance = 10;
     scope.reflectFromAbove = false;
 
     // Internals
     let _halfWidth, _width, _height;
 
     //const _cameraF = new THREE.OrthographicCamera(); //front
-    const _cameraB = new THREE.OrthographicCamera(-1, 1, 0, -2, 1, 4);
+    const _cameraB = new THREE.OrthographicCamera(-1, 1, 1, -1, 1, 20);
     //const _cameraB = new THREE.OrthographicCamera(); //back
-    const _cameraF = new THREE.OrthographicCamera(-1, 1, 2, 0, 4, 6);
+    const _cameraF = new THREE.OrthographicCamera(-1, 1, 1, -1, 1, 20);
 
     const _position = new THREE.Vector3();
     const _quaternion = new THREE.Quaternion();
@@ -68,7 +68,7 @@ class PeppersGhostEffect {
         renderer.setScissor(x, y, width, height);
         renderer.setViewport(x, y, width, height);
       }
-
+      // _cameraF.position(0, 0, 5);
       render(scene, _cameraF, _halfWidth - _width / 2, 0, _width, _height);
       render(
         scene,
@@ -91,29 +91,61 @@ window.onload = () => {
 
     const windowWidth = window.innerWidth;
     const windowHeight = window.innerHeight;
-    var z_plus = 2;
 
     // Add Points Boxs
+    const basePI=(45 * Math.PI) / 180;
+    // 这是个园⚪
     const initialPoints = [
-      { x: 0.353, y: -0.5, z: 0.353 },
-      { x: 0.5, y: 0, z: 0.5 },
-      { x: 0.353, y: 0.5, z: 0.353 },
-      { x: 0, y: 0.707, z: 0 },
-      { x: -0.353, y: 0.5, z: -0.353 },
-      { x: -0.5, y: 0, z: -0.5 },
-      { x: -0.353, y: -0.5, z: -0.353 },
-      { x: 0, y: -0.707, z: 0 },
+      { x: 0, y: -0.5, z: 0 },
+      {
+        x: -0.5 * Math.cos(basePI),
+        y: -0.5 * Math.sin(basePI),
+        z: 0,
+      },
+      { x: -0.5, y: 0, z: 0 },
+      {
+        x: -0.5 * Math.cos(basePI),
+        y: +0.5 * Math.sin(basePI),
+        z: 0,
+      },
+      { x: 0.0, y: 0.5, z: 0 },
+      {
+        x: +0.5 * Math.cos(basePI),
+        y: +0.5 * Math.sin(basePI),
+        z: 0,
+      },
+      { x: 0.5, y: 0.0, z: 0 },
+      {
+        x: +0.5 * Math.cos(basePI),
+        y: -0.5 * Math.sin(basePI),
+        z: 0,
+      },
     ];
-
     const initialPoints2 = [
-      { x: 0.353, y: -0.5, z: 0.647 + z_plus },
-      { x: 0.5, y: 0, z: 0.5 + z_plus },
-      { x: 0.353, y: 0.5, z: 0.647 + z_plus },
-      { x: 0, y: 0.707, z: 1 + z_plus },
-      { x: -0.353, y: 0.5, z: 1.353 + z_plus },
-      { x: -0.5, y: 0, z: 1.5 + z_plus },
-      { x: -0.353, y: -0.5, z: 1.343 + z_plus },
-      { x: 0, y: -0.707, z: 1 + z_plus },
+      { x: 0, y: -0.5, z: 0 },
+      {
+        x: 0,
+        y: -0.5 * Math.sin(basePI),
+        z: -0.5 * Math.cos(basePI),
+      },
+      { x: 0, y: 0, z: -0.5 },
+      {
+        x: 0,
+        y: +0.5 * Math.sin(basePI),
+        z: -0.5 * Math.cos(basePI),
+      },
+      { x: 0.0, y: 0.5, z: 0 },
+      {
+        x: 0,
+        y: +0.5 * Math.sin(basePI),
+        z: +0.5 * Math.cos(basePI),
+      },
+      { x: 0, y: 0.0, z: 0.5 },
+      {
+        x: 0,
+        y: -0.5 * Math.sin(basePI),
+        z: +0.5 * Math.cos(basePI),
+      },
     ];
 
     function initMesh(initialPoints, width, height, depth) {
@@ -178,7 +210,7 @@ window.onload = () => {
             bevelEnabled: false,
           });
           geometry.translate(x, y, z);
-          geometry.rotateX(rotateX);
+          // geometry.rotateX(rotateX);
           return geometry;
         };
         function initFlow(geometry, curve) {
@@ -195,13 +227,14 @@ window.onload = () => {
         const rotateX2 = Math.PI * (1 / 2 + 1 / 4);
         // 添加两个文字
         flow = initFlow(initFont(0, -0.11, -0.11, rotateX1), curve);
-        flow2 = initFlow(initFont(-2.2, -0.11, -0.11, rotateX2), curve);
-        flow3 = initFlow(initFont(0, -0.11, -0.11, rotateX1), curve2);
-        flow4 = initFlow(initFont(-2.24, -0.11, -0.11, rotateX2), curve2);
+        flow2 = initFlow(initFont(0, -0.11, -0.11, rotateX1), curve);
+        // flow2 = initFlow(initFont(-2.2, -0.11, -0.11, rotateX2), curve);
+        // flow3 = initFlow(initFont(0, -0.11, -0.11, rotateX1), curve2);
+        // flow4 = initFlow(initFont(-2.2, -0.11, -0.11, rotateX2), curve2);
         scene.add(flow.object3D);
         scene.add(flow2.object3D);
-        scene.add(flow3.object3D);
-        scene.add(flow4.object3D);
+        // scene.add(flow3.object3D);
+        // scene.add(flow4.object3D);
       }
     );
 
@@ -224,8 +257,8 @@ window.onload = () => {
     if (flow) {
       flow.moveAlongCurve(-0.001);
       flow2.moveAlongCurve(-0.001);
-      flow3.moveAlongCurve(-0.001);
-      flow4.moveAlongCurve(-0.001);
+      // flow3.moveAlongCurve(-0.001);
+      // flow4.moveAlongCurve(-0.001);
     }
     effect.render(scene, camera);
   }
