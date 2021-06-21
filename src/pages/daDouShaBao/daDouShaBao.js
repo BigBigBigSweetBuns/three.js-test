@@ -17,9 +17,9 @@ class PeppersGhostEffect {
     // Internals
     let _halfWidth, _width, _height;
 
-    //const _cameraF = new THREE.OrthographicCamera(); //front
+    //const _cameraB = new THREE.OrthographicCamera(); //front
     const _cameraB = new THREE.OrthographicCamera(-1, 1, 1, -1, 1, 20);
-    //const _cameraB = new THREE.OrthographicCamera(); //back
+    //const _cameraF = new THREE.OrthographicCamera(); //back
     const _cameraF = new THREE.OrthographicCamera(-1, 1, 1, -1, 1, 20);
 
     const _position = new THREE.Vector3();
@@ -93,7 +93,7 @@ window.onload = () => {
     const windowHeight = window.innerHeight;
 
     // Add Points Boxs
-    const basePI=(45 * Math.PI) / 180;
+    const basePI = (45 * Math.PI) / 180;
     // 这是个园⚪
     const initialPoints = [
       { x: 0, y: -0.5, z: 0 },
@@ -121,6 +121,7 @@ window.onload = () => {
         z: 0,
       },
     ];
+    // 垂直方向
     const initialPoints2 = [
       { x: 0, y: -0.5, z: 0 },
       {
@@ -202,15 +203,15 @@ window.onload = () => {
       "./public/fonts/helvetiker_bold.typeface.json",
       function (font) {
         const initFont = function (x = 0, y = 0, z = 0, rotateX = 0) {
-          const geometry = new THREE.TextGeometry("DaDouShaBao", {
+          const geometry = new THREE.TextGeometry("DouShaBao", {
             font: font,
-            size: 0.23,
-            height: 0.25,
-            curveSegments: 20,
+            size: 0.2,
+            height: 0.2,
+            curveSegments: 50,
             bevelEnabled: false,
           });
           geometry.translate(x, y, z);
-          // geometry.rotateX(rotateX);
+          geometry.rotateX(rotateX);
           return geometry;
         };
         function initFlow(geometry, curve) {
@@ -223,11 +224,11 @@ window.onload = () => {
           return tempFlow;
         }
 
-        const rotateX1 = Math.PI * (0 + 1 / 4);
-        const rotateX2 = Math.PI * (1 / 2 + 1 / 4);
+        const rotateX1 = Math.PI * 0;
+        const rotateX2 = (Math.PI * 1) / 2;
         // 添加两个文字
-        flow = initFlow(initFont(0, -0.11, -0.11, rotateX1), curve);
-        flow2 = initFlow(initFont(0, -0.11, -0.11, rotateX1), curve);
+        flow = initFlow(initFont(0, -0.1, -0.1, rotateX1), curve);
+        flow2 = initFlow(initFont(-1.55, -0.1, -0.1, rotateX2), curve);
         // flow2 = initFlow(initFont(-2.2, -0.11, -0.11, rotateX2), curve);
         // flow3 = initFlow(initFont(0, -0.11, -0.11, rotateX1), curve2);
         // flow4 = initFlow(initFont(-2.2, -0.11, -0.11, rotateX2), curve2);
@@ -251,14 +252,15 @@ window.onload = () => {
     effect.cameraDistance = 5;
   }
 
+  const speed = 0.001;
   function animate() {
     requestAnimationFrame(animate);
 
     if (flow) {
-      flow.moveAlongCurve(-0.001);
-      flow2.moveAlongCurve(-0.001);
-      // flow3.moveAlongCurve(-0.001);
-      // flow4.moveAlongCurve(-0.001);
+      flow.moveAlongCurve(-speed);
+      flow2.moveAlongCurve(-speed);
+      // flow3.moveAlongCurve(-speed);
+      // flow4.moveAlongCurve(-speed);
     }
     effect.render(scene, camera);
   }
