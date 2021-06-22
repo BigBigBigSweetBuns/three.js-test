@@ -18,9 +18,9 @@ class PeppersGhostEffect {
     let _halfWidth, _width, _height;
 
     //const _cameraB = new THREE.OrthographicCamera(); //front
-    const _cameraB = new THREE.OrthographicCamera(-1, 1, 1, -1, 1, 20);
+    const _cameraB = new THREE.OrthographicCamera(-1, 1, 1, -1, 1, 20); // 初始化相机
     //const _cameraF = new THREE.OrthographicCamera(); //back
-    const _cameraF = new THREE.OrthographicCamera(-1, 1, 1, -1, 1, 20);
+    const _cameraF = new THREE.OrthographicCamera(-1, 1, 1, -1, 1, 20); // 初始化相机
 
     const _position = new THREE.Vector3();
     const _quaternion = new THREE.Quaternion();
@@ -51,14 +51,14 @@ class PeppersGhostEffect {
       // front
 
       // back
-      function setCamera(camera) {
-        camera.position.copy(_position);
-        camera.quaternion.copy(_quaternion);
-        camera.translateZ(scope.cameraDistance);
+      function setCamera(camera,x=0,y=0,z=0) {
+        camera.position.x = x;
+        camera.position.y = y;
+        camera.position.z = z;
         camera.lookAt(scene.position);
       }
-      setCamera(_cameraB);
-      setCamera(_cameraF);
+      setCamera(_cameraB,3,0,3);
+      setCamera(_cameraF,-3,0,3);
 
       renderer.clear();
       renderer.setScissorTest(true);
@@ -69,15 +69,16 @@ class PeppersGhostEffect {
         renderer.setViewport(x, y, width, height);
       }
       // _cameraF.position(0, 0, 5);
-      render(scene, _cameraF, _halfWidth - _width / 2, 0, _width, _height);
+      render(scene, _cameraB, _width, 0, _width, _height); // 在屏幕的上半部分 
       render(
         scene,
-        _cameraB,
-        _halfWidth - _width / 2,
-        _height,
+        _cameraF,
+        // _halfWidth - _width / 2,
+         _width,
+        0,
         _width,
         _height
-      );
+      ); // 在屏幕的下半部分
       renderer.setScissorTest(false);
     };
   }
