@@ -63,21 +63,24 @@ class PeppersGhostEffect {
       renderer.clear();
       renderer.setScissorTest(true);
 
-      function render(scene, camera, x, y, width, height) {
+      function render(scene, camera, x, y, width, height,_x,_y,_width,_height) {
         renderer.render(scene, camera);
         renderer.setScissor(x, y, width, height);
-        renderer.setViewport(x, y, width, height);
+        renderer.setViewport(_x, _y, _width, _height);
       }
       // _cameraF.position(0, 0, 5);
-      render(scene, _cameraB, _width, 0, _width, _height); // 在屏幕的上半部分 
+      render(scene, _cameraB, _width, 0, 250, 500,_width,0,_width,_height); // 在屏幕的上半部分 
       render(
         scene,
         _cameraF,
-        // _halfWidth - _width / 2,
-         _width,
+         _width+250,
+        0,
+        250,
+        500,
+        _width,
         0,
         _width,
-        _height
+        _height,
       ); // 在屏幕的下半部分
       renderer.setScissorTest(false);
     };
