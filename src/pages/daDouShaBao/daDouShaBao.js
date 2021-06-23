@@ -53,43 +53,52 @@ class PeppersGhostEffect {
       // front
 
       // back
-      function setCamera(camera,x=0,y=0,z=0) {
+      function setCamera(camera, x = 0, y = 0, z = 0) {
         camera.position.x = x;
         camera.position.y = y;
         camera.position.z = z;
         camera.lookAt(scene.position);
       }
-      setCamera(_cameraA,-3,0,3);
-      // setCamera(_cameraA,3,0,3);
-      setCamera(_cameraB,3,0,3);
-      setCamera(_cameraC,3,0,3);
-      setCamera(_cameraD,-3,0,3);
+      setCamera(_cameraA, 3, 0, 3); // 右上角
+      setCamera(_cameraB, -3, 0, 3); // 左上角
+      setCamera(_cameraD, -3, 0, 3); // 右下角
+      setCamera(_cameraC, 3, 0, 3); // 左下角
 
       renderer.clear();
       renderer.setScissorTest(true);
 
-      function render(scene, camera, x, y, width, height,_x,_y,_width,_height) {
+      // x,y的起点为左下角，并非左上角
+      function render(
+        scene,
+        camera,
+        x = 0,
+        y = 0,
+        width,
+        height,
+        _x = 0,
+        _y = 0,
+        _width,
+        _height
+      ) {
         renderer.render(scene, camera);
         renderer.setScissor(x, y, width, height);
         renderer.setViewport(_x, _y, _width, _height);
       }
-      // _cameraF.position(0, 0, 5);
-      render(scene, _cameraA, _width, 150, 250, 250,_width,0,_width,_height); // 在屏幕的上半部分 
-      render(scene, _cameraB, _width+250, 0, 250, 250,_width,0,_width,_height); // 在屏幕的上半部分 
-      render(scene, _cameraC, _width, 0, 250, 250,_width,0,_width,_height); // 在屏幕的上半部分 
+      const viewWidth = 400;
+      const viewHeight = 400;
+      render(scene, _cameraA, 0, 0, 200, 210, 100, 100, viewWidth, viewHeight);
       render(
         scene,
-        _cameraD,
-         _width+250,
+        _cameraB,
         0,
-        250,
-        500,
-        _width,
         0,
         _width,
         _height,
-      ); // 在屏幕的下半部分
-      renderer.setScissorTest(false);
+        0,
+        0,
+        viewWidth,
+        viewHeight
+      );
     };
   }
 }
