@@ -59,14 +59,13 @@ class PeppersGhostEffect {
         camera.position.z = z;
         camera.lookAt(scene.position);
       }
-      setCamera(_cameraA, 3, 0, 3); // 左上角 正面
-      setCamera(_cameraB, -3, 0, 3); // 左下角 背面
-      setCamera(_cameraC, -3, 0, 3); // 右上角 背面
-      setCamera(_cameraD, 3, 0, 3); // 右下角 正面面
-      // setCamera(_cameraA, 3, 0, 3); // 右45%
-      // setCamera(_cameraB, -3, 0, 3); // 背左45%
-      // setCamera(_cameraB, -3, 0, 3); // 背左45%
-      // setCamera(_cameraB, -3, 0, 3); // 背左45%
+
+      setCamera(_cameraA, 0, 0, 3); // 左上角 正面
+      setCamera(_cameraB, 3, 0, 0); // 左上角 正面
+      // setCamera(_cameraA, 3, 0, 3); // 左上角 正面
+      // setCamera(_cameraB, -3, 0, 3); // 左下角 背面
+      // setCamera(_cameraC, -3, 0, 3); // 右上角 背面
+      // setCamera(_cameraD, 3, 0, 3); // 右下角 正面面
 
       renderer.clear();
       renderer.setScissorTest(true);
@@ -84,17 +83,31 @@ class PeppersGhostEffect {
         _width,
         _height
       ) {
-        renderer.render(scene, camera);
         renderer.setScissor(x, y, width, height);
         renderer.setViewport(_x, _y, _width, _height);
+        renderer.render(scene, camera);
       }
       const viewWidth = 400;
       const viewHeight = 400;
       // 尝试正面显示全部
-      render(scene, _cameraA, 100, 210, 100, 130, 0, 0, viewWidth, viewHeight); // 上 左
-      render(scene, _cameraB, 100, 80, 100, 130, 0, 0, viewWidth, viewHeight); // 下 左
-      render(scene, _cameraC, 200, 210, 100, 130, 0, 0, viewWidth, viewHeight); // 上 右
-      render(scene, _cameraD, 200, 80, 100, 130, 0, 0, viewWidth, viewHeight); // 下 右
+      // render(scene, _cameraA, 100, 210, 100, 130, 0, 0, viewWidth, viewHeight); // 上 左
+      // render(scene, _cameraB, 100, 80, 100, 130, 0, 0, viewWidth, viewHeight); // 下 左
+      // render(scene, _cameraC, 200, 210, 100, 130, 0, 0, viewWidth, viewHeight); // 上 右
+      // render(scene, _cameraD, 200, 80, 100, 130, 0, 0, viewWidth, viewHeight); // 下 右
+      // 全显示
+      render(scene, _cameraA, 0, 0, _width, _height, 0, 0, _width, _height);
+      render(
+        scene,
+        _cameraB,
+        _width,
+        0,
+        _width,
+        _height,
+        _width,
+        0,
+        _width,
+        _height
+      );
     };
   }
 }
@@ -111,6 +124,7 @@ window.onload = () => {
     // Add Points Boxs
     const basePI = (45 * Math.PI) / 180;
     // 这是个园⚪
+    // x,y轴的园
     const initialPoints = [
       { x: 0, y: -0.5, z: 0 },
       {
@@ -138,6 +152,7 @@ window.onload = () => {
       },
     ];
     // 垂直方向
+    // y,z轴的园
     const initialPoints2 = [
       { x: 0, y: -0.5, z: 0 },
       {
@@ -242,16 +257,20 @@ window.onload = () => {
 
         const rotateX1 = Math.PI * 0;
         const rotateX2 = (Math.PI * 1) / 2;
+        const rotateX3 = Math.PI * 1;
+        const rotateX4 = -(Math.PI * 1) / 2;
+        // const rotateX1 = 0;
+        // const rotateX2 = 90;
+
         // 添加两个文字
         flow = initFlow(initFont(0, -0.1, -0.1, rotateX1), curve);
         flow2 = initFlow(initFont(-1.55, -0.1, -0.1, rotateX2), curve);
-        // flow2 = initFlow(initFont(-2.2, -0.11, -0.11, rotateX2), curve);
-        // flow3 = initFlow(initFont(0, -0.11, -0.11, rotateX1), curve2);
-        // flow4 = initFlow(initFont(-2.2, -0.11, -0.11, rotateX2), curve2);
+        flow3 = initFlow(initFont(0, -0.1, -0.1, rotateX3), curve);
+        flow4 = initFlow(initFont(-1.55, -0.1, -0.1, rotateX4), curve);
         scene.add(flow.object3D);
         scene.add(flow2.object3D);
-        // scene.add(flow3.object3D);
-        // scene.add(flow4.object3D);
+        scene.add(flow3.object3D);
+        scene.add(flow4.object3D);
       }
     );
 
@@ -268,15 +287,30 @@ window.onload = () => {
     effect.cameraDistance = 5;
   }
 
-  const speed = 0.001;
+  const speedInt = 2; // 需要相加后等于 speedHundred*2
+  const speedHundred = 1000;
+  const speed = speedInt / speedHundred; // 速度得是小数，但js小数相加会失真
+  let n = 0;
+  let bool = false;
   function animate() {
+    // 最高帧率60
     requestAnimationFrame(animate);
 
+    n = speedInt + n;
+
+    console.log(n);
     if (flow) {
-      flow.moveAlongCurve(-speed);
-      flow2.moveAlongCurve(-speed);
-      // flow3.moveAlongCurve(-speed);
-      // flow4.moveAlongCurve(-speed);
+      if (n % (speedHundred * 2) === 0) {
+        // 因为需要旋转两圈
+        bool = !bool;
+      }
+      if (bool) {
+        flow.moveAlongCurve(speed);
+        flow2.moveAlongCurve(speed);
+      } else {
+        flow3.moveAlongCurve(speed);
+        flow4.moveAlongCurve(speed);
+      }
     }
     effect.render(scene, camera);
   }
