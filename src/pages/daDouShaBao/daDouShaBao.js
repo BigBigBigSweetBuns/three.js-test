@@ -6,9 +6,8 @@
 const THREE = require("three");
 const TransformControls = require("three/examples/jsm/modifiers/CurveModifier");
 const Flow = TransformControls.Flow;
-// const TextGroup = require("./font.js");
-// var textGroup = new TextGroup();
 const CameraEffect = require("./cameraEffect");
+const TextGroup = require("./font");
 
 let scene, camera, renderer, flow, flow2, flow3, flow4, effect;
 class InitCurve {
@@ -97,7 +96,7 @@ class InitCurve {
   }
 }
 
-function init() {
+async function init() {
   scene = new THREE.Scene();
 
   const windowWidth = window.innerWidth;
@@ -128,49 +127,14 @@ function init() {
   scene.add(new THREE.AmbientLight(0x003973));
 
   // add Text
-
-  const loader = new THREE.FontLoader();
-
-  loader.load("./public/fonts/helvetiker_bold.typeface.json", function (font) {
-    const initFont = function (x = 0, y = 0, z = 0, rotateX = 0) {
-      const geometry = new THREE.TextGeometry("DouShaBao", {
-        font: font,
-        size: 0.2,
-        height: 0.2,
-        curveSegments: 50,
-        bevelEnabled: false,
-      });
-      geometry.translate(x, y, z);
-      geometry.rotateX(rotateX);
-      return geometry;
-    };
-    function initFlow(geometry, curve) {
-      const material = new THREE.MeshStandardMaterial({
-        color: 0x99ffff,
-      });
-      const objectToCurve = new THREE.Mesh(geometry, material);
-      const tempFlow = new Flow(objectToCurve);
-      tempFlow.updateCurve(0, curve);
-      return tempFlow;
-    }
-
-    const rotateX1 = Math.PI * 0;
-    const rotateX2 = (Math.PI * 1) / 2;
-    const rotateX3 = Math.PI * 1;
-    const rotateX4 = -(Math.PI * 1) / 2;
-    // const rotateX1 = 0;
-    // const rotateX2 = 90;
-
-    // 添加两个文字
-    flow = initFlow(initFont(0, -0.1, -0.1, rotateX1), curve);
-    flow2 = initFlow(initFont(-1.55, -0.1, -0.1, rotateX2), curve);
-    flow3 = initFlow(initFont(0, -0.1, -0.1, rotateX3), curve);
-    flow4 = initFlow(initFont(-1.55, -0.1, -0.1, rotateX4), curve);
-    scene.add(flow.object3D);
-    scene.add(flow2.object3D);
-    // scene.add(flow3.object3D);
-    // scene.add(flow4.object3D);
-  });
+  const textGroup = new TextGroup("PPPPPPPP");
+  await textGroup.init();
+  flow = textGroup.flow;
+  flow2 = textGroup.flow2;
+  scene.add(flow.object3D);
+  scene.add(flow2.object3D);
+  // scene.add(flow3.object3D);
+  // scene.add(flow4.object3D);
 
   renderer = new THREE.WebGLRenderer({ antialias: true });
   renderer.setPixelRatio(window.devicePixelRatio);
@@ -185,7 +149,7 @@ function init() {
   effect.cameraDistance = 5;
 }
 
-window.onload = () => {
+window.onload = async () => {
   const speedInt = 2; // 需要相加后等于 speedHundred*2
   const speedHundred = 1000;
   const speed = speedInt / speedHundred; // 速度得是小数，但js小数相加会失真
@@ -225,6 +189,6 @@ window.onload = () => {
     effect.render(scene, camera);
   }
 
-  init();
+  await init();
   animate();
 };
