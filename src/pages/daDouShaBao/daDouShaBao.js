@@ -131,10 +131,10 @@ async function init() {
   await textGroup.init();
   flow = textGroup.flow;
   flow2 = textGroup.flow2;
+  flow3 = textGroup.flow3;
+  flow4 = textGroup.flow4;
   scene.add(flow.object3D);
   scene.add(flow2.object3D);
-  // scene.add(flow3.object3D);
-  // scene.add(flow4.object3D);
 
   renderer = new THREE.WebGLRenderer({ antialias: true });
   renderer.setPixelRatio(window.devicePixelRatio);
@@ -149,10 +149,15 @@ async function init() {
   effect.cameraDistance = 5;
 }
 
+// 一圈为1000(speedHundred)
+const speedHundred = 1000;
+const speedInt = 2; // 需要相加后等于 speedHundred*2
+const speed = speedInt / speedHundred; // 速度得是小数，但js小数相加会失真
+let rotate = 0;
+let rotate2 = speedHundred / 2;
+let rotate3 = 0;
+let rotate4 = 0;
 window.onload = async () => {
-  const speedInt = 2; // 需要相加后等于 speedHundred*2
-  const speedHundred = 1000;
-  const speed = speedInt / speedHundred; // 速度得是小数，但js小数相加会失真
   let n = 0;
   let bool = false;
   function animate() {
@@ -161,30 +166,28 @@ window.onload = async () => {
 
     n = speedInt + n;
 
+    // 需要保证在右方的字体保持显示，直到移动到左方
     if (flow) {
-      if (n % (speedHundred * 2) === 0) {
-        // 因为需要旋转两圈
-        bool = !bool;
-        if (!bool) {
-          // 删除和添加
-          scene.remove(flow3.object3D);
-          scene.remove(flow4.object3D);
-          scene.add(flow.object3D);
-          scene.add(flow2.object3D);
-        } else {
-          scene.remove(flow.object3D);
-          scene.remove(flow2.object3D);
-          scene.add(flow3.object3D);
-          scene.add(flow4.object3D);
-        }
+      // 因为需要旋转两圈
+      // console.log("rotate", rotate);
+      console.log("rotate", rotate % speedHundred);
+      if (rotate % speedHundred === 500) {
+        console.log("a2");
+        scene.remove(flow.object3D);
+      } else if (rotate % speedHundred === 0) {
+        console.log("a3");
+        scene.add(flow.object3D);
       }
-      if (!bool) {
-        flow.moveAlongCurve(speed);
-        flow2.moveAlongCurve(speed);
-      } else {
-        flow3.moveAlongCurve(speed);
-        flow4.moveAlongCurve(speed);
-      }
+    }
+    // 记录角度
+    if (!bool) {
+      flow.moveAlongCurve(speed);
+      rotate += speedInt;
+      flow2.moveAlongCurve(speed);
+      rotate2 += speedInt;
+    } else {
+      flow3.moveAlongCurve(speed);
+      flow4.moveAlongCurve(speed);
     }
     effect.render(scene, camera);
   }

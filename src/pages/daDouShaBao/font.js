@@ -29,18 +29,20 @@ class TextGroup {
     const rotateX4 = -(Math.PI * 1) / 2;
     const geometry = await this.initFont(this.text, this.fontFamily);
     const geometry2 = await this.initFont(this.text, this.fontFamily);
-    // const geometry = await this.initFont(this.text, this.fontFamily);
-    // const geometry = await this.initFont(this.text, this.fontFamily);
+    const geometry3 = await this.initFont(this.text, this.fontFamily);
+    const geometry4 = await this.initFont(this.text, this.fontFamily);
     const textGeometry = this.initText(geometry, 0, -0.1, -0.1, rotateX1);
     const textGeometry2 = this.initText(geometry2, -1.55, -0.1, -0.1, rotateX2);
-    const textGeometry3 = this.initText(geometry, 0, -0.1, -0.1, rotateX3);
-    const textGeometry4 = this.initText(geometry, -1.55, -0.1, -0.1, rotateX4);
+    const textGeometry3 = this.initText(geometry3, 0, -0.1, -0.1, rotateX3);
+    const textGeometry4 = this.initText(geometry4, -1.55, -0.1, -0.1, rotateX4);
     const points = this.pointsXY(0.5);
     const curve = this.initCurve(this.initMesh(points, 0.1, 0.1, 0.1));
     this.flow = this.createFlow(textGeometry, curve);
     this.flow2 = this.createFlow(textGeometry2, curve);
     this.flow3 = this.createFlow(textGeometry3, curve);
     this.flow4 = this.createFlow(textGeometry4, curve);
+    console.log("flow", this.flow);
+    console.log("flow2", this.flow2);
   }
   // x,y轴的圆
   pointsXY(size = 0.5) {
