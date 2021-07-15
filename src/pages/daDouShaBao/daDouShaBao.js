@@ -9,110 +9,13 @@ const Flow = TransformControls.Flow;
 const CameraEffect = require("./cameraEffect");
 const TextGroup = require("./font");
 
-let scene, camera, renderer, flow, flow2, flow3, flow4, effect;
-class InitCurve {
-  curve;
-  curve2;
-  basePI = (45 * Math.PI) / 180;
-  // x,y轴的园
-  points1;
-  // y,z轴的园
-  points2;
-  constructor() {
-    this.points1 = [
-      { x: 0, y: -0.5, z: 0 },
-      {
-        x: -0.5 * Math.cos(this.basePI),
-        y: -0.5 * Math.sin(this.basePI),
-        z: 0,
-      },
-      { x: -0.5, y: 0, z: 0 },
-      {
-        x: -0.5 * Math.cos(this.basePI),
-        y: +0.5 * Math.sin(this.basePI),
-        z: 0,
-      },
-      { x: 0.0, y: 0.5, z: 0 },
-      {
-        x: +0.5 * Math.cos(this.basePI),
-        y: +0.5 * Math.sin(this.basePI),
-        z: 0,
-      },
-      { x: 0.5, y: 0.0, z: 0 },
-      {
-        x: +0.5 * Math.cos(this.basePI),
-        y: -0.5 * Math.sin(this.basePI),
-        z: 0,
-      },
-    ];
-    this.points2 = [
-      { x: 0, y: -0.5, z: 0 },
-      {
-        x: 0,
-        y: -0.5 * Math.sin(this.basePI),
-        z: -0.5 * Math.cos(this.basePI),
-      },
-      { x: 0, y: 0, z: -0.5 },
-      {
-        x: 0,
-        y: +0.5 * Math.sin(this.basePI),
-        z: -0.5 * Math.cos(this.basePI),
-      },
-      { x: 0.0, y: 0.5, z: 0 },
-      {
-        x: 0,
-        y: +0.5 * Math.sin(this.basePI),
-        z: +0.5 * Math.cos(this.basePI),
-      },
-      { x: 0, y: 0.0, z: 0.5 },
-      {
-        x: 0,
-        y: -0.5 * Math.sin(this.basePI),
-        z: +0.5 * Math.cos(this.basePI),
-      },
-    ];
-    this.curve = this.initCurve(this.initMesh(this.points1, 0.1, 0.1, 0.1));
-    this.curve = this.initCurve(this.initMesh(this.points2, 0.1, 0.1, 0.1));
-  }
-  initMesh(points, width, height, depth) {
-    const arr = [];
-    const boxGeometry = new THREE.BoxGeometry(width, height, depth);
-    const boxMaterial = new THREE.MeshBasicMaterial();
-    for (const handlePos of points) {
-      const handle = new THREE.Mesh(boxGeometry, boxMaterial);
-      handle.position.copy(handlePos);
-      arr.push(handle);
-    }
-    return arr;
-  }
-  // add Curve
-  initCurve(curveHandles) {
-    const curve = new THREE.CatmullRomCurve3(
-      curveHandles.map((handle) => handle.position)
-    );
-    curve.curveType = "centripetal";
-    curve.closed = true;
-    return curve;
-  }
-}
+let scene, camera, renderer, flow1, flow2, flow3, flow4, effect;
 
 async function init() {
   scene = new THREE.Scene();
 
   const windowWidth = window.innerWidth;
   const windowHeight = window.innerHeight;
-
-  const initCurve = new InitCurve();
-  const curve = initCurve.curve;
-  const curve2 = initCurve.curve2;
-
-  // Add line
-  const points = curve.getPoints(50);
-  const line = new THREE.LineLoop(
-    new THREE.BufferGeometry().setFromPoints(points),
-    new THREE.LineBasicMaterial({ color: 0x00ff00 })
-  );
-  scene.add(line);
 
   // add Light
   function initDirectionalLight(x, y, z, color = 0xffaa33, intensity = 1.0) {
@@ -135,6 +38,8 @@ async function init() {
   flow4 = textGroup.flow4;
   scene.add(flow1.object3D);
   scene.add(flow2.object3D);
+  // add line
+  scene.add(textGroup.lineXY);
 
   renderer = new THREE.WebGLRenderer({ antialias: true });
   renderer.setPixelRatio(window.devicePixelRatio);

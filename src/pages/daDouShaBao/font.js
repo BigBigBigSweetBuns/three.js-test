@@ -75,6 +75,14 @@ class TextGroup {
     this.flow2 = this.createFlow(textGeometry2, curve);
     this.flow3 = this.createFlow(textGeometry3, curve);
     this.flow4 = this.createFlow(textGeometry4, curve);
+    this.addLine(curve);
+  }
+  addLine(curve) {
+    const points = curve.getPoints(50);
+    this.lineXY = new THREE.LineLoop(
+      new THREE.BufferGeometry().setFromPoints(points),
+      new THREE.LineBasicMaterial({ color: 0x00ff00 })
+    );
   }
   // x,y轴的圆
   pointsXY(size = 0.5) {
@@ -108,6 +116,7 @@ class TextGroup {
   }
   // y,z轴的圆
   pointsYZ(size = 0.5) {
+    const basePI = (45 * Math.PI) / 180;
     return [
       { x: 0, y: -size, z: 0 },
       {
