@@ -153,14 +153,9 @@ async function init() {
 const speedHundred = 1000;
 const speedInt = 2; // 需要相加后等于 speedHundred*2
 const speed = speedInt / speedHundred; // 速度得是小数，但js小数相加会失真
-let rotate = 0;
-let rotate2 = speedHundred / 2;
-let rotate3 = 0;
-let rotate4 = 0;
 
 window.onload = async () => {
-  let n = 0;
-  let bool = false;
+  let n = 0; // 记录当前旋转的角度,一圈 = speedHundred
   function animate() {
     // 最高帧率60
     requestAnimationFrame(animate);
@@ -185,14 +180,10 @@ window.onload = async () => {
     // 记录角度
     // if (!bool) {
     flow1.moveAlongCurve(speed);
-    rotate += speedInt;
     flow2.moveAlongCurve(speed);
-    rotate2 += speedInt;
     // } else {
     flow3.moveAlongCurve(speed);
-    rotate3 += speedInt;
     flow4.moveAlongCurve(speed);
-    rotate4 += speedInt;
     // }
     effect.render(scene, camera);
   }
