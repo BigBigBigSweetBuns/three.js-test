@@ -129,11 +129,11 @@ async function init() {
   // add Text
   const textGroup = new TextGroup("PPPPPPPP");
   await textGroup.init();
-  flow = textGroup.flow;
+  flow1 = textGroup.flow;
   flow2 = textGroup.flow2;
   flow3 = textGroup.flow3;
   flow4 = textGroup.flow4;
-  scene.add(flow.object3D);
+  scene.add(flow1.object3D);
   scene.add(flow2.object3D);
 
   renderer = new THREE.WebGLRenderer({ antialias: true });
@@ -157,6 +157,7 @@ let rotate = 0;
 let rotate2 = speedHundred / 2;
 let rotate3 = 0;
 let rotate4 = 0;
+
 window.onload = async () => {
   let n = 0;
   let bool = false;
@@ -166,29 +167,33 @@ window.onload = async () => {
 
     n = speedInt + n;
 
-    // 需要保证在右方的字体保持显示，直到移动到左方
-    if (flow) {
-      // 因为需要旋转两圈
-      // console.log("rotate", rotate);
-      console.log("rotate", rotate % speedHundred);
-      if (rotate % speedHundred === 500) {
-        console.log("a2");
-        scene.remove(flow.object3D);
-      } else if (rotate % speedHundred === 0) {
-        console.log("a3");
-        scene.add(flow.object3D);
-      }
+    // 每180度切换显示
+    const pan = n % (2 * speedHundred);
+    if (pan === 500) {
+      scene.remove(flow1.object3D);
+      scene.add(flow3.object3D);
+    } else if (pan === 1000) {
+      scene.add(flow2.object3D);
+      scene.remove(flow4.object3D);
+    } else if (pan === 1500) {
+      scene.add(flow1.object3D);
+      scene.remove(flow3.object3D);
+    } else if (pan === 0) {
+      scene.remove(flow2.object3D);
+      scene.add(flow4.object3D);
     }
     // 记录角度
-    if (!bool) {
-      flow.moveAlongCurve(speed);
-      rotate += speedInt;
-      flow2.moveAlongCurve(speed);
-      rotate2 += speedInt;
-    } else {
-      flow3.moveAlongCurve(speed);
-      flow4.moveAlongCurve(speed);
-    }
+    // if (!bool) {
+    flow1.moveAlongCurve(speed);
+    rotate += speedInt;
+    flow2.moveAlongCurve(speed);
+    rotate2 += speedInt;
+    // } else {
+    flow3.moveAlongCurve(speed);
+    rotate3 += speedInt;
+    flow4.moveAlongCurve(speed);
+    rotate4 += speedInt;
+    // }
     effect.render(scene, camera);
   }
 
