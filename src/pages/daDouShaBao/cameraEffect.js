@@ -65,9 +65,9 @@ class CameraEffect {
     this.renderCamera(
       scene,
       this._cameraA,
+      this.width / 2,
       0,
-      0,
-      this._width,
+      this._width / 2,
       this._height,
       0,
       0,
