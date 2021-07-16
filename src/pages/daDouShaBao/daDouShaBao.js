@@ -49,9 +49,7 @@ async function init() {
   document.body.appendChild(renderer.domElement);
 
   // 添加相机
-  effect = new CameraEffect(renderer);
-  effect.setSize(windowWidth, windowHeight);
-  effect.cameraDistance = 5;
+  effect = new CameraEffect(renderer, windowWidth, windowHeight);
 }
 
 // 一圈为1000(speedHundred)
