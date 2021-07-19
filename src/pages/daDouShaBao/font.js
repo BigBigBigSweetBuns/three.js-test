@@ -26,13 +26,11 @@ class TextGroup {
     this.text = text;
     this.fontFamily = fontFamily;
     this.color = color;
-    console.log("initFlow");
   }
-  async init() {
-    await this.initFlow();
+  async init(textPosition = { x: 0, y: 0, z: 0 }) {
+    await this.initFlow(textPosition);
   }
-  async initFlow() {
-    // const curve;
+  async initFlow(textPosition) {
     const rotateX1 = Math.PI * 0;
     const rotateX2 = (Math.PI * 1) / 2;
     const rotateX3 = Math.PI * 1;
@@ -43,28 +41,28 @@ class TextGroup {
     const geometry4 = await this.initFont(this.text, this.fontFamily);
     const textGeometry = this.initText(
       geometry,
-      this.translateXYZ.x,
+      this.translateXYZ.x + textPosition.x,
       this.translateXYZ.y,
       this.translateXYZ.z,
       rotateX1
     );
     const textGeometry2 = this.initText(
       geometry2,
-      this.translate2XYZ.x,
+      this.translate2XYZ.x + textPosition.x,
       this.translate2XYZ.y,
       this.translate2XYZ.z,
       rotateX2
     );
     const textGeometry3 = this.initText(
       geometry3,
-      this.translateXYZ.x,
+      this.translateXYZ.x + textPosition.x,
       this.translateXYZ.y,
       this.translateXYZ.z,
       rotateX3
     );
     const textGeometry4 = this.initText(
       geometry4,
-      this.translate2XYZ.x,
+      this.translate2XYZ.x + textPosition.x,
       this.translate2XYZ.y,
       this.translate2XYZ.z,
       rotateX4

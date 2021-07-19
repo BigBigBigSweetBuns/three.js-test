@@ -10,6 +10,7 @@ const CameraEffect = require("./cameraEffect");
 const TextGroup = require("./font");
 
 let scene, camera, renderer, flow1, flow2, flow3, flow4, effect;
+let tFlow1, tFlow2, tFlow3, tFlow4;
 
 async function init() {
   scene = new THREE.Scene();
@@ -25,7 +26,7 @@ async function init() {
   }
   // 点光
   scene.add(initDirectionalLight(10, 0, 0, 0xffaa33));
-  scene.add(initDirectionalLight(0, 0, 0, 0xffaa33));
+  scene.add(initDirectionalLight(-10, 0, 0, 0xffaa33, 0.7));
   // 环境光
   scene.add(new THREE.AmbientLight(0x003973));
 
@@ -38,6 +39,16 @@ async function init() {
   flow4 = textGroup.flow4;
   scene.add(flow1.object3D);
   scene.add(flow2.object3D);
+  // add Text2
+  const textGroup2 = new TextGroup("PPPPPPPP");
+  const textPosition = { x: 10, y: 0, z: 0 };
+  await textGroup2.init(textPosition);
+  tFlow1 = textGroup2.flow;
+  tFlow2 = textGroup2.flow2;
+  tFlow3 = textGroup2.flow3;
+  tFlow4 = textGroup2.flow4;
+  scene.add(tFlow3.object3D);
+  scene.add(tFlow4.object3D);
   // add line
   scene.add(textGroup.lineXY);
 
@@ -80,14 +91,31 @@ window.onload = async () => {
       scene.remove(flow2.object3D);
       scene.add(flow4.object3D);
     }
+    // 第二组
+    if (pan === 500) {
+      scene.remove(tFlow3.object3D);
+      scene.add(tFlow1.object3D);
+    } else if (pan === 1000) {
+      scene.add(tFlow4.object3D);
+      scene.remove(tFlow2.object3D);
+    } else if (pan === 1500) {
+      scene.add(tFlow3.object3D);
+      scene.remove(tFlow1.object3D);
+    } else if (pan === 0) {
+      scene.remove(tFlow4.object3D);
+      scene.add(tFlow2.object3D);
+    }
     // 记录角度
-    // if (!bool) {
     flow1.moveAlongCurve(speed);
     flow2.moveAlongCurve(speed);
-    // } else {
     flow3.moveAlongCurve(speed);
     flow4.moveAlongCurve(speed);
-    // }
+
+    tFlow1.moveAlongCurve(speed);
+    tFlow2.moveAlongCurve(speed);
+    tFlow3.moveAlongCurve(speed);
+    tFlow4.moveAlongCurve(speed);
+
     effect.render(scene, camera);
   }
 

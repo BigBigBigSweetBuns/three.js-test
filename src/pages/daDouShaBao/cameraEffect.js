@@ -46,10 +46,10 @@ class CameraEffect {
 
     // this.setCamera(_cameraA, 0, 0, 3,scene.position); // 左上角 正面
     // this.setCamera(_cameraB, 3, 0, 0,scene.position); // 左上角 正面
-    this.setCamera(this._cameraA, 3, 0, 3, scene.position); // 左上角 正面
-    this.setCamera(this._cameraB, -3, 0, 3, scene.position); // 左下角 背面
-    this.setCamera(this._cameraC, -3, 0, 3, scene.position); // 右上角 背面
-    this.setCamera(this._cameraD, 3, 0, 3, scene.position); // 右下角 正面面
+    this.setCamera(this._cameraA, -3, 0, 3, scene.position); // 左上角 正面
+    this.setCamera(this._cameraB, 3, 0, 3, scene.position); // 左下角 背面
+    // this.setCamera(this._cameraC, -3, 0, 3, scene.position); // 右上角 背面
+    // this.setCamera(this._cameraD, 3, 0, 3, scene.position); // 右下角 正面面
 
     this.renderer.clear();
     this.renderer.setScissorTest(true);
@@ -65,7 +65,19 @@ class CameraEffect {
     this.renderCamera(
       scene,
       this._cameraA,
-      this.width / 2,
+      0,
+      0,
+      this._width / 2,
+      this._height,
+      0,
+      0,
+      this._width,
+      this._height
+    );
+    this.renderCamera(
+      scene,
+      this._cameraB,
+      this._width / 2,
       0,
       this._width / 2,
       this._height,
