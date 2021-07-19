@@ -67,7 +67,7 @@ class TextGroup {
       this.translate2XYZ.z,
       rotateX4
     );
-    const points = this.pointsXY(0.5);
+    const points = this.pointsXY(0.5, textPosition.x);
     const curve = this.initCurve(this.initMesh(points, 0.1, 0.1, 0.1));
     this.flow = this.createFlow(textGeometry, curve);
     this.flow2 = this.createFlow(textGeometry2, curve);
@@ -83,30 +83,30 @@ class TextGroup {
     );
   }
   // x,y轴的圆
-  pointsXY(size = 0.5) {
+  pointsXY(size = 0.5, x = 0) {
     const basePI = (45 * Math.PI) / 180;
     return [
-      { x: 0, y: -size, z: 0 },
+      { x: x, y: -size, z: 0 },
       {
-        x: -size * Math.cos(basePI),
+        x: -size * Math.cos(basePI) + x,
         y: -size * Math.sin(basePI),
         z: 0,
       },
-      { x: -size, y: 0, z: 0 },
+      { x: -size + x, y: 0, z: 0 },
       {
-        x: -size * Math.cos(basePI),
+        x: -size * Math.cos(basePI) + x,
         y: +size * Math.sin(basePI),
         z: 0,
       },
-      { x: 0.0, y: size, z: 0 },
+      { x: x, y: size, z: 0 },
       {
-        x: +size * Math.cos(basePI),
+        x: size * Math.cos(basePI) + x,
         y: +size * Math.sin(basePI),
         z: 0,
       },
-      { x: size, y: 0.0, z: 0 },
+      { x: size + x, y: 0.0, z: 0 },
       {
-        x: +size * Math.cos(basePI),
+        x: size * Math.cos(basePI) + x,
         y: -size * Math.sin(basePI),
         z: 0,
       },
@@ -178,7 +178,6 @@ class TextGroup {
       });
     };
     const geometry = await fontLoad(text, fontFamily);
-    console.log("", geometry);
     return geometry;
   }
   initText(geometry, x, y, z, rotateX) {

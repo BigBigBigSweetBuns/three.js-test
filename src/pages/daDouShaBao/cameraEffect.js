@@ -35,7 +35,13 @@ class CameraEffect {
 
     this.renderer.setSize(width, height);
   }
-  setCamera(camera, x = 0, y = 0, z = 0, position = { x: 0, y: 0, z: 0 }) {
+  setCamera(
+    camera,
+    x = 0,
+    y = 0,
+    z = 0,
+    position = new THREE.Vector3(0, 0, 0)
+  ) {
     camera.position.x = x;
     camera.position.y = y;
     camera.position.z = z;
@@ -43,11 +49,10 @@ class CameraEffect {
   }
   render(scene, camera) {
     scene.updateMatrixWorld();
-
     // this.setCamera(_cameraA, 0, 0, 3,scene.position); // 左上角 正面
     // this.setCamera(_cameraB, 3, 0, 0,scene.position); // 左上角 正面
     this.setCamera(this._cameraA, -3, 0, 3, scene.position); // 左上角 正面
-    this.setCamera(this._cameraB, 3, 0, 3, scene.position); // 左下角 背面
+    this.setCamera(this._cameraB, 10 + 3, 0, 3, new THREE.Vector3(10, 0, 0)); // 左下角 背面
     // this.setCamera(this._cameraC, -3, 0, 3, scene.position); // 右上角 背面
     // this.setCamera(this._cameraD, 3, 0, 3, scene.position); // 右下角 正面面
 
@@ -87,8 +92,8 @@ class CameraEffect {
       this._height
     );
     // 全显示
-    // render(scene, this._cameraA, 0, 0, this._width, this._height, 0, 0, this._width, this._height);
-    // render(
+    // this.renderCamera(scene, this._cameraA, 0, 0, this._width, this._height, 0, 0, this._width, this._height);
+    // this.renderCamera(
     //   scene,
     //   this._cameraB,
     //   this._width,
@@ -97,8 +102,8 @@ class CameraEffect {
     //   this._height,
     //   this._width,
     //   0,
-    //   _width,
-    //   _height
+    //   this._width,
+    //   this._height
     // );
   }
   // x,y的起点为左下角，并非左上角

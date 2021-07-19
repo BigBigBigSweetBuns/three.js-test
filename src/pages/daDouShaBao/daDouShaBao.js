@@ -79,17 +79,17 @@ window.onload = async () => {
     // 每180度切换显示
     const pan = n % (2 * speedHundred);
     if (pan === 500) {
-      scene.remove(flow1.object3D);
-      scene.add(flow3.object3D);
-    } else if (pan === 1000) {
-      scene.add(flow2.object3D);
-      scene.remove(flow4.object3D);
-    } else if (pan === 1500) {
-      scene.add(flow1.object3D);
-      scene.remove(flow3.object3D);
-    } else if (pan === 0) {
       scene.remove(flow2.object3D);
       scene.add(flow4.object3D);
+    } else if (pan === 1000) {
+      scene.remove(flow1.object3D);
+      scene.add(flow3.object3D);
+    } else if (pan === 1500) {
+      scene.add(flow2.object3D);
+      scene.remove(flow4.object3D);
+    } else if (pan === 0) {
+      scene.add(flow1.object3D);
+      scene.remove(flow3.object3D);
     }
     // 第二组
     if (pan === 500) {
