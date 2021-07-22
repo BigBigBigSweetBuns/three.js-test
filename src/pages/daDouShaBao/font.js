@@ -8,6 +8,7 @@ class TextGroup {
   flow2; // 90%
   flow3; // 180%
   flow4; // 270%
+  curve;
   translateXYZ = {
     x: 0,
     y: 0,
@@ -20,17 +21,22 @@ class TextGroup {
   };
   constructor(
     text = "DaDouShaBao",
+    textPosition = { x: 0, y: 0, z: 0 },
     fontFamily = "./public/fonts/helvetiker_bold.typeface.json",
     color = 0x99ffff
   ) {
     this.text = text;
+    this.textPosition = textPosition;
     this.fontFamily = fontFamily;
     this.color = color;
   }
-  async init(textPosition = { x: 0, y: 0, z: 0 }) {
-    await this.initFlow(textPosition);
+  async init() {
+    await this.initFlow();
   }
-  async initFlow(textPosition) {
+  initLine(lineColor = 0x00ff00) {
+    this.addLine(this.curve, lineColor, this.textPosition.x);
+  }
+  async initFlow() {
     const rotateX1 = Math.PI * 0;
     const rotateX2 = (Math.PI * 1) / 2;
     const rotateX3 = Math.PI * 1;
@@ -43,44 +49,45 @@ class TextGroup {
     const textGeometry2 = this.initText(geometry2, rotateX2);
     const textGeometry3 = this.initText(geometry3, rotateX3);
     const textGeometry4 = this.initText(geometry4, rotateX4);
-    const points = this.pointsXY(0.5, textPosition.x);
+    const points = this.pointsXY(0.5);
     const curve = this.initCurve(this.initMesh(points, 0.1, 0.1, 0.1));
+    this.curve = curve;
     this.flow = this.createFlow(
       textGeometry,
       curve,
-      this.translateXYZ.x,
+      this.translateXYZ.x + this.textPosition.x,
       this.translateXYZ.y,
       this.translateXYZ.z
     );
     this.flow2 = this.createFlow(
       textGeometry2,
       curve,
-      this.translate2XYZ.x,
+      this.translate2XYZ.x + this.textPosition.x,
       this.translate2XYZ.y,
       this.translate2XYZ.z
     );
     this.flow3 = this.createFlow(
       textGeometry3,
       curve,
-      this.translateXYZ.x,
+      this.translateXYZ.x + this.textPosition.x,
       this.translateXYZ.y,
       this.translateXYZ.z
     );
     this.flow4 = this.createFlow(
       textGeometry4,
       curve,
-      this.translate2XYZ.x,
+      this.translate2XYZ.x + this.textPosition.x,
       this.translate2XYZ.y,
       this.translate2XYZ.z
     );
-    this.addLine(curve);
   }
-  addLine(curve) {
+  addLine(curve, color = 0x00ff00, positionX) {
     const points = curve.getPoints(50);
-    this.lineXY = new THREE.LineLoop(
+    this.line = new THREE.LineLoop(
       new THREE.BufferGeometry().setFromPoints(points),
-      new THREE.LineBasicMaterial({ color: 0x00ff00 })
+      new THREE.LineBasicMaterial({ color: color })
     );
+    this.line.position.x = positionX;
   }
   // x,y轴的圆
   pointsXY(size = 0.5, x = 0) {

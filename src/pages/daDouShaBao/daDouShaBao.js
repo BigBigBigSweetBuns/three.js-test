@@ -33,24 +33,31 @@ async function init() {
   // add Text
   const textGroup = new TextGroup("PPPPPPPP");
   await textGroup.init();
+  textGroup.initLine();
   flow1 = textGroup.flow;
   flow2 = textGroup.flow2;
+  flow2.moveAlongCurve(0.5);
   flow3 = textGroup.flow3;
   flow4 = textGroup.flow4;
+  flow4.moveAlongCurve(0.5);
   scene.add(flow1.object3D);
   scene.add(flow2.object3D);
   // add Text2
-  const textGroup2 = new TextGroup("PPPPPPPP");
-  const textPosition = { x: 10, y: 0, z: 0 };
-  await textGroup2.init(textPosition);
+  const textPosition = { x: 3, y: 0, z: 0 };
+  const textGroup2 = new TextGroup("EEEEEEEE", textPosition);
+  await textGroup2.init();
+  textGroup2.initLine(0xffffff);
   tFlow1 = textGroup2.flow;
   tFlow2 = textGroup2.flow2;
+  tFlow2.moveAlongCurve(0.5);
   tFlow3 = textGroup2.flow3;
   tFlow4 = textGroup2.flow4;
+  tFlow4.moveAlongCurve(0.5);
   scene.add(tFlow3.object3D);
   scene.add(tFlow4.object3D);
   // add line
-  scene.add(textGroup.lineXY);
+  scene.add(textGroup.line);
+  scene.add(textGroup2.line);
 
   renderer = new THREE.WebGLRenderer({ antialias: true });
   renderer.setPixelRatio(window.devicePixelRatio);
@@ -60,7 +67,7 @@ async function init() {
   document.body.appendChild(renderer.domElement);
 
   // 添加相机
-  effect = new CameraEffect(renderer, windowWidth, windowHeight);
+  effect = new CameraEffect(scene, renderer, windowWidth, windowHeight);
 }
 
 // 一圈为1000(speedHundred)
