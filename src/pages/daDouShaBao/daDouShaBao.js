@@ -59,6 +59,14 @@ async function init() {
   scene.add(textGroup.line);
   scene.add(textGroup2.line);
 
+  // 辅助坐标系
+  var axisHelper = new THREE.AxisHelper(4);
+  scene.add(axisHelper);
+
+  var axisHelper2 = new THREE.AxisHelper(4);
+  axisHelper2.position.x = 3; //坐标轴旋转
+  scene.add(axisHelper2);
+
   renderer = new THREE.WebGLRenderer({ antialias: true });
   renderer.setPixelRatio(window.devicePixelRatio);
   renderer.setSize(windowWidth, windowHeight);

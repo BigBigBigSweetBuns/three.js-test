@@ -34,7 +34,7 @@ class TextGroup {
     await this.initFlow();
   }
   initLine(lineColor = 0x00ff00) {
-    this.addLine(this.curve, lineColor, this.textPosition.x);
+    this.addLine(this.curve, lineColor, this.textPosition);
   }
   async initFlow() {
     const rotateX1 = Math.PI * 0;
@@ -56,64 +56,66 @@ class TextGroup {
       textGeometry,
       curve,
       this.translateXYZ.x + this.textPosition.x,
-      this.translateXYZ.y,
-      this.translateXYZ.z
+      this.translateXYZ.y + this.textPosition.y,
+      this.translateXYZ.z + this.textPosition.z
     );
     this.flow2 = this.createFlow(
       textGeometry2,
       curve,
       this.translate2XYZ.x + this.textPosition.x,
-      this.translate2XYZ.y,
-      this.translate2XYZ.z
+      this.translate2XYZ.y + this.textPosition.y,
+      this.translate2XYZ.z + this.textPosition.z
     );
     this.flow3 = this.createFlow(
       textGeometry3,
       curve,
       this.translateXYZ.x + this.textPosition.x,
-      this.translateXYZ.y,
-      this.translateXYZ.z
+      this.translateXYZ.y + this.textPosition.y,
+      this.translateXYZ.z + this.textPosition.z
     );
     this.flow4 = this.createFlow(
       textGeometry4,
       curve,
       this.translate2XYZ.x + this.textPosition.x,
-      this.translate2XYZ.y,
-      this.translate2XYZ.z
+      this.translate2XYZ.y + this.textPosition.y,
+      this.translate2XYZ.z + this.textPosition.z
     );
   }
-  addLine(curve, color = 0x00ff00, positionX) {
+  addLine(curve, color = 0x00ff00, position = { x: 0, y: 0, z: 0 }) {
     const points = curve.getPoints(50);
     this.line = new THREE.LineLoop(
       new THREE.BufferGeometry().setFromPoints(points),
       new THREE.LineBasicMaterial({ color: color })
     );
-    this.line.position.x = positionX;
+    this.line.position.x = position.x;
+    this.line.position.y = position.y;
+    this.line.position.z = position.z;
   }
   // x,y轴的圆
-  pointsXY(size = 0.5, x = 0) {
+  pointsXY(size = 0.5) {
     const basePI = (45 * Math.PI) / 180;
     return [
-      { x: x, y: -size, z: 0 },
+      { x: 0, y: -size, z: 0 },
       {
-        x: -size * Math.cos(basePI) + x,
+        x: -size * Math.cos(basePI),
         y: -size * Math.sin(basePI),
         z: 0,
       },
-      { x: -size + x, y: 0, z: 0 },
+      { x: -size, y: 0, z: 0 },
       {
-        x: -size * Math.cos(basePI) + x,
+        x: -size * Math.cos(basePI),
         y: +size * Math.sin(basePI),
         z: 0,
       },
-      { x: x, y: size, z: 0 },
+      { x: 0, y: size, z: 0 },
       {
-        x: size * Math.cos(basePI) + x,
+        x: size * Math.cos(basePI),
         y: +size * Math.sin(basePI),
         z: 0,
       },
-      { x: size + x, y: 0.0, z: 0 },
+      { x: size, y: 0.0, z: 0 },
       {
-        x: size * Math.cos(basePI) + x,
+        x: size * Math.cos(basePI),
         y: -size * Math.sin(basePI),
         z: 0,
       },
