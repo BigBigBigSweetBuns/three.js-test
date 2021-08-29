@@ -16,6 +16,7 @@ module.exports = {
     // 页面入口
     index: ["./src/pages/index/index.js"],
     daDouShaBao: ["./src/pages/daDouShaBao/daDouShaBao.js"],
+    stage: ["./src/pages/stage/index.js"],
   },
   devtool: "inline-source-map",
   //打包后的文件和其输出目录
@@ -48,6 +49,11 @@ module.exports = {
       filename: "daDouShaBao.html",
       template: "./src/pages/daDouShaBao/daDouShaBao.html",
       chunks: ["daDouShaBao", "vendors"],
+    }),
+    new HtmlWebpackPlugin({
+      filename: "stage.html",
+      template: "./src/pages/stage/index.html",
+      chunks: ["stage"],
     }),
     //引入webpack热模块更新插件
     new webpack.HotModuleReplacementPlugin(),
