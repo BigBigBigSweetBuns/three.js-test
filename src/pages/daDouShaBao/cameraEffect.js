@@ -38,19 +38,19 @@ class CameraEffect {
     this.renderer.setSize(width, height);
   }
   initCamera(scene) {
-    this.setCamera(this._cameraA, 3, 0, 3, scene.position);
+    this.setCamera(this._cameraA, 0, 3, 3, scene.position);
     this.setCamera(this._cameraB, 0, 0, 3, new THREE.Vector3(0, 0, 0));
     // 全显示
   }
   setCamera(camera, x = 0, y = 0, z = 0, position = null) {
-    camera.position.x = x;
-    camera.position.y = y;
-    camera.position.z = z;
-    if (position) {
-      camera.lookAt(position);
+      camera.position.x = x;
+      camera.position.y = y;
+      camera.position.z = z;
+      if (position) {
+        camera.lookAt(position);
+      }
     }
-  }
-  // x,y角
+    // x,y角
   renderCamera(
     scene,
     camera,
@@ -65,6 +65,7 @@ class CameraEffect {
   ) {
     this.renderer.setScissor(x, y, width, height);
     this.renderer.setViewport(_x, _y, _width, _height);
+    this.renderer.localClippingEnabled = true;
     this.renderer.render(scene, camera);
   }
   render(scene, camera) {
@@ -106,18 +107,6 @@ class CameraEffect {
       this._width,
       this._height,
       0,
-      0,
-      this._width,
-      this._height
-    );
-    this.renderCamera(
-      scene,
-      this._cameraB,
-      this._width,
-      0,
-      this._width,
-      this._height,
-      this._width,
       0,
       this._width,
       this._height

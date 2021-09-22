@@ -43,7 +43,7 @@ async function init() {
   scene.add(flow1.object3D);
   scene.add(flow2.object3D);
   // add Text2
-  const textPosition = { x: 3, y: 0, z: 0 };
+  const textPosition = { x: 0, y: 0, z: 0 };
   const textGroup2 = new TextGroup("EEEEEEEE", textPosition);
   await textGroup2.init();
   textGroup2.initLine(0xffffff);
@@ -83,7 +83,7 @@ const speedHundred = 1000;
 const speedInt = 2; // 需要相加后等于 speedHundred*2
 const speed = speedInt / speedHundred; // 速度得是小数，但js小数相加会失真
 
-window.onload = async () => {
+window.onload = async() => {
   let n = 0; // 记录当前旋转的角度,一圈 = speedHundred
   function animate() {
     // 最高帧率60
@@ -107,29 +107,29 @@ window.onload = async () => {
       scene.remove(flow3.object3D);
     }
     // 第二组
-    if (pan === 500) {
-      scene.remove(tFlow3.object3D);
-      scene.add(tFlow1.object3D);
-    } else if (pan === 1000) {
-      scene.add(tFlow4.object3D);
-      scene.remove(tFlow2.object3D);
-    } else if (pan === 1500) {
-      scene.add(tFlow3.object3D);
-      scene.remove(tFlow1.object3D);
-    } else if (pan === 0) {
-      scene.remove(tFlow4.object3D);
-      scene.add(tFlow2.object3D);
-    }
+    // if (pan === 500) {
+    //   scene.remove(tFlow3.object3D);
+    //   scene.add(tFlow1.object3D);
+    // } else if (pan === 1000) {
+    //   scene.add(tFlow4.object3D);
+    //   scene.remove(tFlow2.object3D);
+    // } else if (pan === 1500) {
+    //   scene.add(tFlow3.object3D);
+    //   scene.remove(tFlow1.object3D);
+    // } else if (pan === 0) {
+    //   scene.remove(tFlow4.object3D);
+    //   scene.add(tFlow2.object3D);
+    // }
     // 记录角度
     flow1.moveAlongCurve(speed);
     flow2.moveAlongCurve(speed);
     flow3.moveAlongCurve(speed);
     flow4.moveAlongCurve(speed);
 
-    tFlow1.moveAlongCurve(speed);
-    tFlow2.moveAlongCurve(speed);
-    tFlow3.moveAlongCurve(speed);
-    tFlow4.moveAlongCurve(speed);
+    // tFlow1.moveAlongCurve(speed);
+    // tFlow2.moveAlongCurve(speed);
+    // tFlow3.moveAlongCurve(speed);
+    // tFlow4.moveAlongCurve(speed);
 
     effect.render(scene, camera);
   }

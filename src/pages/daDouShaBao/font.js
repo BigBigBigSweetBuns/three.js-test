@@ -82,46 +82,46 @@ class TextGroup {
     );
   }
   addLine(curve, color = 0x00ff00, position = { x: 0, y: 0, z: 0 }) {
-    const points = curve.getPoints(50);
-    this.line = new THREE.LineLoop(
-      new THREE.BufferGeometry().setFromPoints(points),
-      new THREE.LineBasicMaterial({ color: color })
-    );
-    this.line.position.x = position.x;
-    this.line.position.y = position.y;
-    this.line.position.z = position.z;
-  }
-  // x,y轴的圆
+      const points = curve.getPoints(50);
+      this.line = new THREE.LineLoop(
+        new THREE.BufferGeometry().setFromPoints(points),
+        new THREE.LineBasicMaterial({ color: color })
+      );
+      this.line.position.x = position.x;
+      this.line.position.y = position.y;
+      this.line.position.z = position.z;
+    }
+    // x,y轴的圆
   pointsXY(size = 0.5) {
-    const basePI = (45 * Math.PI) / 180;
-    return [
-      { x: 0, y: -size, z: 0 },
-      {
-        x: -size * Math.cos(basePI),
-        y: -size * Math.sin(basePI),
-        z: 0,
-      },
-      { x: -size, y: 0, z: 0 },
-      {
-        x: -size * Math.cos(basePI),
-        y: +size * Math.sin(basePI),
-        z: 0,
-      },
-      { x: 0, y: size, z: 0 },
-      {
-        x: size * Math.cos(basePI),
-        y: +size * Math.sin(basePI),
-        z: 0,
-      },
-      { x: size, y: 0.0, z: 0 },
-      {
-        x: size * Math.cos(basePI),
-        y: -size * Math.sin(basePI),
-        z: 0,
-      },
-    ];
-  }
-  // y,z轴的圆
+      const basePI = (45 * Math.PI) / 180;
+      return [
+        { x: 0, y: -size, z: 0 },
+        {
+          x: -size * Math.cos(basePI),
+          y: -size * Math.sin(basePI),
+          z: 0,
+        },
+        { x: -size, y: 0, z: 0 },
+        {
+          x: -size * Math.cos(basePI),
+          y: +size * Math.sin(basePI),
+          z: 0,
+        },
+        { x: 0, y: size, z: 0 },
+        {
+          x: size * Math.cos(basePI),
+          y: +size * Math.sin(basePI),
+          z: 0,
+        },
+        { x: size, y: 0.0, z: 0 },
+        {
+          x: size * Math.cos(basePI),
+          y: -size * Math.sin(basePI),
+          z: 0,
+        },
+      ];
+    }
+    // y,z轴的圆
   pointsYZ(size = 0.5) {
     const basePI = (45 * Math.PI) / 180;
     return [
@@ -174,7 +174,7 @@ class TextGroup {
     const fontLoad = (text, fontFamily) => {
       return new Promise((resolve, reject) => {
         const loader = new THREE.FontLoader();
-        loader.load(fontFamily, function (font) {
+        loader.load(fontFamily, function(font) {
           const data = new THREE.TextGeometry(text, {
             font: font,
             size: 0.2,
@@ -189,6 +189,14 @@ class TextGroup {
     const geometry = await fontLoad(text, fontFamily);
     return geometry;
   }
+  initPlanes() {
+    const planes = [ //声明三个平面，作为切割面。1, 0, 0为法向量，0为constant
+      new THREE.Plane(new THREE.Vector3(1, 0, 0), 0),
+      new THREE.Plane(new THREE.Vector3(0, -1, 0), 0),
+      new THREE.Plane(new THREE.Vector3(0, 0, -1), 0)
+    ];
+  }
+
   /**
    * 设置中心轴并旋转X轴
    * @param {*} geometry
@@ -202,13 +210,24 @@ class TextGroup {
     return geometry;
   }
   createFlow(geometry, curve, x = 0, y = 0, z = 0, color = 0x99ffff) {
+    const planes = [ //声明三个平面，作为切割面。1, 0, 0为法向量，0为constant
+      new THREE.Plane(new THREE.Vector3(1, 0, 1), 0),
+      // new THREE.Plane(new THREE.Vector3(0, -1, 0), 0),
+      // new THREE.Plane(new THREE.Vector3(0, 0, -1), 0)
+    ];
+
     const material = new THREE.MeshStandardMaterial({
       color,
+      clippingPlanes: planes,
+      // clipIntersection: true,
     });
     const objectToCurve = new THREE.Mesh(geometry, material);
     objectToCurve.position.x = x;
     objectToCurve.position.y = y;
     objectToCurve.position.z = z;
+
+    // objectToCurve.rotation.x = 1.56;
+    // objectToCurve.rotation.z = .1;
     const tempFlow = new Flow(objectToCurve);
     tempFlow.updateCurve(0, curve);
     return tempFlow;
