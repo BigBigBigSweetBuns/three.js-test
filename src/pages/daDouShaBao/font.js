@@ -22,13 +22,15 @@ class TextGroup {
   constructor(
     text = "DaDouShaBao",
     textPosition = { x: 0, y: 0, z: 0 },
+    corp = "top",
     fontFamily = "./public/fonts/helvetiker_bold.typeface.json",
-    color = 0x99ffff
+    color = 0x99ffff,
   ) {
     this.text = text;
     this.textPosition = textPosition;
     this.fontFamily = fontFamily;
     this.color = color;
+    this.corp = corp; // 选择裁剪的上下
   }
   async init() {
     await this.initFlow();
@@ -49,37 +51,69 @@ class TextGroup {
     const textGeometry2 = this.initText(geometry2, rotateX2);
     const textGeometry3 = this.initText(geometry3, rotateX3);
     const textGeometry4 = this.initText(geometry4, rotateX4);
-    const points = this.pointsXY(0.5);
+    const points = this.corp == "top" ? this.pointsXY(0.5) : this.pointsYZ(0.5);
+    // const points = this.corp == "left" ? this.pointsXY(0.5) : this.pointsYZ(0.5);
     const curve = this.initCurve(this.initMesh(points, 0.1, 0.1, 0.1));
     this.curve = curve;
-    this.flow = this.createFlow(
-      textGeometry,
-      curve,
-      this.translateXYZ.x + this.textPosition.x,
-      this.translateXYZ.y + this.textPosition.y,
-      this.translateXYZ.z + this.textPosition.z
-    );
-    this.flow2 = this.createFlow(
-      textGeometry2,
-      curve,
-      this.translate2XYZ.x + this.textPosition.x,
-      this.translate2XYZ.y + this.textPosition.y,
-      this.translate2XYZ.z + this.textPosition.z
-    );
-    this.flow3 = this.createFlow(
-      textGeometry3,
-      curve,
-      this.translateXYZ.x + this.textPosition.x,
-      this.translateXYZ.y + this.textPosition.y,
-      this.translateXYZ.z + this.textPosition.z
-    );
-    this.flow4 = this.createFlow(
-      textGeometry4,
-      curve,
-      this.translate2XYZ.x + this.textPosition.x,
-      this.translate2XYZ.y + this.textPosition.y,
-      this.translate2XYZ.z + this.textPosition.z
-    );
+    if (this.corp == "top") {
+      this.flow = this.createFlowTop(
+        textGeometry,
+        curve,
+        this.translateXYZ.x + this.textPosition.x,
+        this.translateXYZ.y + this.textPosition.y,
+        this.translateXYZ.z + this.textPosition.z
+      );
+      this.flow2 = this.createFlowTop(
+        textGeometry2,
+        curve,
+        this.translate2XYZ.x + this.textPosition.x,
+        this.translate2XYZ.y + this.textPosition.y,
+        this.translate2XYZ.z + this.textPosition.z
+      );
+      this.flow3 = this.createFlowTop(
+        textGeometry3,
+        curve,
+        this.translateXYZ.x + this.textPosition.x,
+        this.translateXYZ.y + this.textPosition.y,
+        this.translateXYZ.z + this.textPosition.z
+      );
+      this.flow4 = this.createFlowTop(
+        textGeometry4,
+        curve,
+        this.translate2XYZ.x + this.textPosition.x,
+        this.translate2XYZ.y + this.textPosition.y,
+        this.translate2XYZ.z + this.textPosition.z
+      );
+    } else if (this.corp == "down") {
+      this.flow = this.createFlowDown(
+        textGeometry,
+        curve,
+        this.translateXYZ.x + this.textPosition.x,
+        this.translateXYZ.y + this.textPosition.y,
+        this.translateXYZ.z + this.textPosition.z
+      );
+      this.flow2 = this.createFlowDown(
+        textGeometry2,
+        curve,
+        this.translate2XYZ.x + this.textPosition.x,
+        this.translate2XYZ.y + this.textPosition.y,
+        this.translate2XYZ.z + this.textPosition.z
+      );
+      this.flow3 = this.createFlowDown(
+        textGeometry3,
+        curve,
+        this.translateXYZ.x + this.textPosition.x,
+        this.translateXYZ.y + this.textPosition.y,
+        this.translateXYZ.z + this.textPosition.z
+      );
+      this.flow4 = this.createFlowDown(
+        textGeometry4,
+        curve,
+        this.translate2XYZ.x + this.textPosition.x,
+        this.translate2XYZ.y + this.textPosition.y,
+        this.translate2XYZ.z + this.textPosition.z
+      );
+    }
   }
   addLine(curve, color = 0x00ff00, position = { x: 0, y: 0, z: 0 }) {
       const points = curve.getPoints(50);
@@ -129,25 +163,25 @@ class TextGroup {
       {
         x: 0,
         y: -size * Math.sin(basePI),
+        z: +size * Math.cos(basePI),
+      },
+      { x: 0, y: 0, z: +size },
+      {
+        x: 0,
+        y: +size * Math.sin(basePI),
+        z: +size * Math.cos(basePI),
+      },
+      { x: 0.0, y: +size, z: 0 },
+      {
+        x: 0,
+        y: +size * Math.sin(basePI),
         z: -size * Math.cos(basePI),
       },
       { x: 0, y: 0, z: -size },
       {
         x: 0,
-        y: +size * Math.sin(basePI),
-        z: -size * Math.cos(basePI),
-      },
-      { x: 0.0, y: size, z: 0 },
-      {
-        x: 0,
-        y: +size * Math.sin(basePI),
-        z: +size * Math.cos(basePI),
-      },
-      { x: 0, y: 0.0, z: size },
-      {
-        x: 0,
         y: -size * Math.sin(basePI),
-        z: +size * Math.cos(basePI),
+        z: -size * Math.cos(basePI),
       },
     ];
   }
@@ -209,11 +243,9 @@ class TextGroup {
     geometry.rotateX(rotateX);
     return geometry;
   }
-  createFlow(geometry, curve, x = 0, y = 0, z = 0, color = 0x99ffff) {
+  createFlowTop(geometry, curve, x = 0, y = 0, z = 0, color = 0x99ffff) {
     const planes = [ //声明三个平面，作为切割面。1, 0, 0为法向量，0为constant
-      new THREE.Plane(new THREE.Vector3(1, 0, 1), 0),
-      // new THREE.Plane(new THREE.Vector3(0, -1, 0), 0),
-      // new THREE.Plane(new THREE.Vector3(0, 0, -1), 0)
+      new THREE.Plane(new THREE.Vector3(0, 1, 0), 0),
     ];
 
     const material = new THREE.MeshStandardMaterial({
@@ -226,8 +258,25 @@ class TextGroup {
     objectToCurve.position.y = y;
     objectToCurve.position.z = z;
 
-    // objectToCurve.rotation.x = 1.56;
-    // objectToCurve.rotation.z = .1;
+    const tempFlow = new Flow(objectToCurve);
+    tempFlow.updateCurve(0, curve);
+    return tempFlow;
+  }
+  createFlowDown(geometry, curve, x = 0, y = 0, z = 0, color = 0x99ffff) {
+    const planes = [ //声明三个平面，作为切割面。1, 0, 0为法向量，0为constant
+      new THREE.Plane(new THREE.Vector3(0, -1, 0), 0),
+    ];
+
+    const material = new THREE.MeshStandardMaterial({
+      color,
+      clippingPlanes: planes,
+      // clipIntersection: true,
+    });
+    const objectToCurve = new THREE.Mesh(geometry, material);
+    objectToCurve.position.x = x;
+    objectToCurve.position.y = y;
+    objectToCurve.position.z = z;
+
     const tempFlow = new Flow(objectToCurve);
     tempFlow.updateCurve(0, curve);
     return tempFlow;

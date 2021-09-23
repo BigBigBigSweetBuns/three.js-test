@@ -38,7 +38,7 @@ class CameraEffect {
     this.renderer.setSize(width, height);
   }
   initCamera(scene) {
-    this.setCamera(this._cameraA, 0, 3, 3, scene.position);
+    this.setCamera(this._cameraA, 3, 0, 3, scene.position);
     this.setCamera(this._cameraB, 0, 0, 3, new THREE.Vector3(0, 0, 0));
     // 全显示
   }
