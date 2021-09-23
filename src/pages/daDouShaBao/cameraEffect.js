@@ -4,6 +4,7 @@ class CameraEffect {
   renderer;
   // 大小
   _halfWidth;
+  _halfHeight;
   _width;
   _height;
   // 摄像机
@@ -28,14 +29,19 @@ class CameraEffect {
   }
   initWindowSize(width, height) {
     this._halfWidth = width / 2;
-    if (width < height) {
-      this._width = width / 2;
-      this._height = width / 2;
-    } else {
-      this._width = height / 2;
-      this._height = height / 2;
-    }
-    this.renderer.setSize(width, height);
+    this._halfHeight = height / 2;
+
+    this.sideLength = Math.min(width, height);
+    this._width = this.sideLength / 2;
+    this._height = this.sideLength / 2;
+    // if (width < height) {
+    //   this._width = width / 2;
+    //   this._height = width / 2;
+    // } else {
+    //   this._width = height / 2;
+    //   this._height = height / 2;
+    // }
+    this.renderer.setSize(this._width, this._height);
   }
   initCamera(scene) {
     this.setCamera(this._cameraA, 3, 0, 3, scene.position);
@@ -70,34 +76,9 @@ class CameraEffect {
   }
   render(scene, camera) {
     scene.updateMatrixWorld(true); // 更新模型的世界矩阵
-    // this.renderer.clear();
+    this.renderer.clear();
+    this.renderer.setClearAlpha(0.0);
 
-    // this.initCamera(scene);
-    // 展示一半
-    // this.renderCamera(
-    //   scene,
-    //   this._cameraA,
-    //   0,
-    //   0,
-    //   this._width / 2,
-    //   this._height,
-    //   0,
-    //   0,
-    //   this._width,
-    //   this._height
-    // );
-    // this.renderCamera(
-    //   scene,
-    //   this._cameraB,
-    //   this._width / 2,
-    //   0,
-    //   this._width / 2,
-    //   this._height,
-    //   0,
-    //   0,
-    //   this._width,
-    //   this._height
-    // );
     // 全展示
     this.renderCamera(
       scene,

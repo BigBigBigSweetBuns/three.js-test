@@ -211,9 +211,9 @@ class TextGroup {
         loader.load(fontFamily, function(font) {
           const data = new THREE.TextGeometry(text, {
             font: font,
-            size: 0.2,
-            height: 0.2,
-            curveSegments: 50,
+            size: 0.17,
+            height: 0.17,
+            curveSegments: 21,
             bevelEnabled: false,
           });
           resolve(data);

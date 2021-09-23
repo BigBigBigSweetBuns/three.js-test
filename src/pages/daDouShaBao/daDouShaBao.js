@@ -1,8 +1,3 @@
-// import * as THREE from "../build/three.module.js";
-// import { TransformControls } from "./jsm/controls/TransformControls.js";
-// import Stats from "./jsm/libs/stats.module.js";
-// import { Flow } from "./jsm/modifiers/CurveModifier.js";
-
 const THREE = require("three");
 const TransformControls = require("three/examples/jsm/modifiers/CurveModifier");
 const Flow = TransformControls.Flow;
@@ -25,15 +20,19 @@ async function init() {
     return light;
   }
   // 添加背景颜色
-  scene.background = new THREE.Color(0xcccccc);
+  // scene.background = new THREE.(0, 0, 0, 0);
   // 点光
   scene.add(initDirectionalLight(10, 0, 0, 0xffaa33));
   scene.add(initDirectionalLight(-10, 0, 0, 0xffaa33, 0.7));
+  scene.add(initDirectionalLight(0, 10, 0, 0xffaa33, 0.3));
+  scene.add(initDirectionalLight(0, -10, 0, 0xffaa33, 0.3));
+  scene.add(initDirectionalLight(0, 0, 20, 0xffaa33, 0.3));
+  scene.add(initDirectionalLight(0, 0, -20, 0xffaa33, 0.3));
   // 环境光
   scene.add(new THREE.AmbientLight(0x003973));
 
   // add Text
-  const textGroup = new TextGroup("PPPPPPPPP");
+  const textGroup = new TextGroup("DPPPPPPPP");
   await textGroup.init();
   textGroup.initLine();
   flow1 = textGroup.flow;
@@ -48,7 +47,7 @@ async function init() {
   scene.add(flow2.object3D);
   // add Text2
   const textPosition = { x: 0, y: 0, z: 0 };
-  const textGroup2 = new TextGroup("PPPPPPPPP", textPosition, "down");
+  const textGroup2 = new TextGroup("DPPPPPPPP", textPosition, "down");
   await textGroup2.init();
   textGroup2.initLine(0xffffff);
   tFlow1 = textGroup2.flow;
@@ -67,13 +66,10 @@ async function init() {
 
   // 辅助坐标系
   var axisHelper = new THREE.AxisHelper(4);
-  scene.add(axisHelper);
+  // scene.add(axisHelper);
 
-  var axisHelper2 = new THREE.AxisHelper(4);
-  axisHelper2.position.x = 3; //坐标轴旋转
-  scene.add(axisHelper2);
 
-  renderer = new THREE.WebGLRenderer({ antialias: true });
+  renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
   renderer.setPixelRatio(window.devicePixelRatio);
   renderer.setSize(windowWidth, windowHeight);
   // renderer.shadowMap.enabled = true;
@@ -86,7 +82,7 @@ async function init() {
 
 // 一圈为1000(speedHundred)
 const speedHundred = 1000;
-const speedInt = 2; // 需要相加后等于 speedHundred*2
+const speedInt = 1; // 需要相加后等于 speedHundred*2
 const speed = speedInt / speedHundred; // 速度得是小数，但js小数相加会失真
 
 window.onload = async() => {
